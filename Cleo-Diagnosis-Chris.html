@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cleo — A Diagnosis for Chris Hamblin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --accent: #7c3aed;
+      --accent-light: #f5f3ff;
+      --accent-muted: #c4b5fd;
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --radius: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--bg); line-height: 1.75; font-size: 17px; -webkit-font-smoothing: antialiased; }
+    .page { max-width: 880px; margin: 0 auto; padding: 0 40px; }
+
+    .top-label { padding: 48px 0 0; font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); }
+
+    .hero { padding: 40px 0 48px; border-bottom: 1px solid var(--border); }
+    .hero .eyebrow { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: 0.5px; margin-bottom: 16px; }
+    .hero h1 { font-family: 'DM Serif Display', serif; font-size: 44px; color: var(--text); line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+    .hero .subline { font-size: 19px; color: var(--text-secondary); line-height: 1.6; max-width: 640px; }
+
+    .section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .section-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; }
+    .section p { margin-bottom: 16px; color: var(--text); font-size: 17px; }
+    .section p:last-child { margin-bottom: 0; }
+
+    .core-leak { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .core-leak .section-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; }
+    .leak-panel { background: var(--bg-alt); border-left: 4px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 32px 36px; }
+    .leak-panel p { margin-bottom: 16px; color: var(--text); font-size: 17px; line-height: 1.75; }
+    .leak-panel p:last-of-type { margin-bottom: 0; }
+    .leak-callout { margin-top: 24px; padding: 20px 28px; background: var(--accent-light); border-radius: 10px; font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.5; }
+
+    .why-now { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .why-now .section-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; }
+    .stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+    .stat-block { text-align: center; padding: 24px 16px; background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: var(--radius); }
+    .stat-block .stat-number { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--accent); line-height: 1.1; margin-bottom: 6px; }
+    .stat-block .stat-label { font-size: 13px; color: var(--text-secondary); line-height: 1.4; font-weight: 500; }
+    .why-now-prose p { margin-bottom: 16px; color: var(--text); font-size: 17px; line-height: 1.75; }
+    .why-now-prose p:last-child { margin-bottom: 0; }
+
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+    .card { background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 24px; }
+    .card h4 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.35; }
+    .card p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 0; }
+
+    .priority { display: flex; gap: 20px; margin-bottom: 20px; padding: 24px 28px; background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: var(--radius); }
+    .priority-num { flex-shrink: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; margin-top: 2px; }
+    .priority-content h4 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.35; }
+    .priority-content p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 0; }
+    .priority-content .unlocks { margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--accent); }
+
+    .shift { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .shift p { font-size: 18px; color: var(--text); line-height: 1.7; font-weight: 500; }
+
+    .cta { padding: 48px 0; border-bottom: 1px solid var(--border); }
+    .cta p { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--text); line-height: 1.35; }
+
+    .doc-footer { padding: 40px 0 64px; }
+    .doc-footer p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+
+    @media (max-width: 700px) {
+      .page { padding: 0 24px; }
+      .hero h1 { font-size: 32px; }
+      .hero .subline { font-size: 17px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .cta p { font-size: 22px; }
+      .section { padding: 36px 0; }
+      .priority { flex-direction: column; gap: 12px; }
+      .leak-panel { padding: 24px; }
+      .leak-callout { font-size: 16px; padding: 16px 20px; }
+      .stat-row { grid-template-columns: 1fr; gap: 12px; }
+      .stat-block .stat-number { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="top-label">Prepared for Chris Hamblin, VP of Growth, Cleo</div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="eyebrow">Revenue Diagnosis — Cleo</div>
+      <h1>One acquisition model. Three markets it was never built for.</h1>
+      <div class="subline">You built a $300M Earned Wage Access acquisition model. The Federal Trade Commission settlement landed. The UK relaunch went live. The diversification mandate is active. Each of these requires a different acquisition approach. Right now, one team is being asked to solve all three.</div>
+    </div>
+
+    <!-- CORE LEAK -->
+    <div class="core-leak">
+      <div class="section-label">The Core Leak</div>
+      <div class="leak-panel">
+        <p>Cleo's Earned Wage Access acquisition was built around a single user moment: someone between twenty and thirty-five who needs money before Friday and has already been to their bank. That moment has a clear trigger. It converts on Meta and TikTok. The cost per acquisition is benchmarked.</p>
+        <p>None of Cleo's next bets share that moment.</p>
+        <p>The credit builder user is forward-looking, not urgent. They want a better credit score in six months. That is a different trigger, a different channel, and a different message. Running cash advance creative at a credit builder audience explains why diversification cost per acquisition is likely three to five times higher than core right now.</p>
+        <p>The UK user already has Monzo. They have Starling, Revolut, and Plum at two million users. Coming back to the United Kingdom without the Earned Wage Access product means leading with artificial intelligence coaching — an angle not yet validated at scale there. The staged rollout with a waitlist, six weeks after the February 5 launch, signals the existing playbook has not found UK traction.</p>
+        <p>And across all of it, the Federal Trade Commission consent decree changed the creative brief. Every campaign needs a legal review pass. The growth team was built to experiment fast. The regulatory frame slows that velocity at exactly the moment Cleo needs to run more tests, not fewer.</p>
+        <div class="leak-callout">One acquisition system, built for one product, is being stretched across three user profiles and two regulatory regimes at once.</div>
+      </div>
+    </div>
+
+    <!-- WHAT THIS INDICATES -->
+    <div class="section">
+      <div class="section-label">What This Seems to Indicate</div>
+      <div class="card-grid">
+        <div class="card">
+          <h4>Diversification cost per acquisition has no per-product benchmark</h4>
+          <p>Cleo's job description asks the incoming hire to "align new product CPAs with core benchmarks." That language means alignment does not exist today. Each quarter the credit builder and artificial intelligence coaching products run at elevated cost per acquisition is capital that cannot be reinvested in scale.</p>
+        </div>
+        <div class="card">
+          <h4>The UK relaunch is a positioning problem, not a media buying problem</h4>
+          <p>Monzo owns "the bank that gets you." Starling owns small business banking. Revolut owns multi-currency. Cleo's UK angle is not yet publicly defined. "Artificial intelligence money app" is not a differentiated claim in a market where every challenger bank is adding artificial intelligence features.</p>
+        </div>
+        <div class="card">
+          <h4>Post-Federal Trade Commission acquisition messaging needs a rebuild, not a patch</h4>
+          <p>The settlement was feedback on the acquisition model. Promises about advance amounts users did not qualify for drove the complaint volume. Any messaging for new products that leads with maximum outcomes carries the same structural risk. The fix is a brief standard that leads with verified claims by default.</p>
+        </div>
+        <div class="card">
+          <h4>The initial public offering timeline compresses the window</h4>
+          <p>At $280M to $300M in annual recurring revenue, profitable, growing at over 2x year on year, Cleo is twelve to twenty-four months from a meaningful capital event. Public market investors will scrutinise revenue concentration. A company described as "the cash advance app" at listing commands a different multiple than "the artificial intelligence financial platform."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY THIS MATTERS NOW -->
+    <div class="why-now">
+      <div class="section-label">Why This Matters Now</div>
+      <div class="stat-row">
+        <div class="stat-block">
+          <div class="stat-number">$280–300M</div>
+          <div class="stat-label">Cleo's annual recurring revenue — pre-initial public offering scale with investor scrutiny arriving</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-number">3–5x</div>
+          <div class="stat-label">Estimated cost per acquisition gap between core Earned Wage Access and diversification products</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-number">12–24 months</div>
+          <div class="stat-label">Estimated window to initial public offering — every quarter without validated diversification acquisition narrows the story</div>
+        </div>
+      </div>
+      <div class="why-now-prose">
+        <p>Plum has proven UK consumers will pay for artificial intelligence money tools at two million users. But Plum does not have Cleo's personality. The positioning window to own "artificial intelligence financial coach for UK users" is open now. Monzo and Starling are not yet in that specific category. Waiting another two quarters to find the right UK angle means waiting for that gap to close.</p>
+        <p>Dave's revenue is declining. Brigit's user base is smaller. MoneyLion is too scattered to dominate any single category. The credit builder window is open. It will not stay open.</p>
+      </div>
+    </div>
+
+    <!-- WHAT I WOULD FIX FIRST -->
+    <div class="section">
+      <div class="section-label">What I Would Fix First</div>
+
+      <div class="priority">
+        <div class="priority-num">1</div>
+        <div class="priority-content">
+          <h4>Define the acquisition signal for each product separately before running more spend</h4>
+          <p>Credit builder users, UK coaching users, and future product users have different intent triggers. Each needs its own signal definition before any media runs. Who are they? When do they show intent? What do they believe before they convert? Running diversification spend without this mapped means learning slowly what a structured two-week signal sprint per product could answer in days.</p>
+          <div class="unlocks">Unlocks: cost per acquisition benchmarks that reflect each product's actual user, not the Earned Wage Access playbook</div>
+        </div>
+      </div>
+
+      <div class="priority">
+        <div class="priority-num">2</div>
+        <div class="priority-content">
+          <h4>Run a four-week positioning test for the UK before scaling spend</h4>
+          <p>Test three angles at low spend. First: "Your Monzo handles the money. Cleo coaches you on it." Second: cost-of-living pressure for users under financial strain. Third: the artificial intelligence personality angle for users who find challenger banks cold. Read conversion data at day fourteen. Kill the losers. Scale the winner at day twenty-eight. No broader spend without a validated angle.</p>
+          <div class="unlocks">Unlocks: a UK angle grounded in real conversion data, not assumptions</div>
+        </div>
+      </div>
+
+      <div class="priority">
+        <div class="priority-num">3</div>
+        <div class="priority-content">
+          <h4>Rebuild the credit builder brief around a specific outcome users can verify</h4>
+          <p>"Build your credit" does not convert. "Users improved their credit score by an average of 47 points in 90 days" does. Source the number from existing credit builder users and lead with it. Verified, specific outcomes outperform category claims in this category. The Federal Trade Commission constraint reinforces this: verified claims are safer and more effective.</p>
+          <div class="unlocks">Unlocks: credit builder cost per acquisition that moves toward core benchmarks</div>
+        </div>
+      </div>
+
+      <div class="priority" style="margin-bottom: 0;">
+        <div class="priority-num">4</div>
+        <div class="priority-content">
+          <h4>Create a creative brief standard that pre-qualifies claims before they reach legal review</h4>
+          <p>A one-page standard that the team applies before production removes the bottleneck of post-production legal notes. No maximum amount claims without the typical amount disclosed. No delivery speed claims without verification. Cancellation language visible on the landing page. This reduces review time and removes the incentive to write claims that legal will flag later.</p>
+          <div class="unlocks">Unlocks: faster test and learn cycles inside the Federal Trade Commission frame, not despite it</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE SHIFT -->
+    <div class="shift">
+      <div class="section-label">The Shift</div>
+      <p>Right now, Cleo has one acquisition model that works and three acquisition challenges it is trying to solve with that same model. New product cost per acquisition is elevated. The UK relaunch is moving slowly. The diversification narrative is not yet credible to public market investors.</p>
+      <br>
+      <p>The shift is from executing a known playbook to building the process that generates playbooks. One that tests each product's acquisition signal before scaling spend. One that has clear go or no-go milestones at two weeks and four weeks. One that produces a validated acquisition model for each product line, not a single framework applied to every user.</p>
+      <br>
+      <p>When that exists, the initial public offering story changes. Not "the cash advance app that settled with the Federal Trade Commission." The artificial intelligence financial platform that validated acquisition across four product categories and two geographies — with a credit builder growing and a UK market gaining momentum before the listing.</p>
+      <br>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <div class="section-label">Which of these feels most accurate from your side?</div>
+      <p>Is it the UK positioning question, the credit builder cost per acquisition gap, or the speed of getting the diversification acquisition motion live before the next board review?</p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="doc-footer">
+      <p>Strategy and go-to-market research by Jean Mundabi Fala, MDB Growth Capital<br>
+      MDB installs permanent revenue infrastructure directly onto a client's balance sheet — replacing rented lead flow with owned acquisition systems.</p>
+    </div>
+
+  </div>
+</body>
+</html>

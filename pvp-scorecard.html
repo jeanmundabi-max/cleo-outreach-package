@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Wellness Score — Cleo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--blue:#341CFF;--blue-h:#2a15d9;--purple:#21248D;--yellow:#FFE36D;--yellow-dim:rgba(255,227,109,.12);
+--zircon:#F2F6FF;--green:#1DB954;--green-dim:rgba(29,185,84,.08);
+--dark:#0f0f2d;--dark-s:#1a1a40;--wh:#ffffff;--off:#f8f9ff;
+--g3:#d1d5db;--g4:#9ca3af;--g5:#6b7280;--g6:#4b5563;
+--red:#ef4444;--amber:#f59e0b;
+--f:'DM Sans',system-ui,sans-serif;
+}
+html{-webkit-font-smoothing:antialiased;font-size:18px}
+body{font-family:var(--f);color:var(--dark);line-height:1.6;background:var(--wh);min-height:100dvh;display:flex;flex-direction:column}
+
+.wrap{max-width:640px;margin:0 auto;padding:0 20px;width:100%}
+
+/* Header */
+.hdr{background:var(--dark);padding:40px 0;text-align:center}
+.hdr .logo{font-weight:800;font-size:1rem;color:var(--wh);margin-bottom:14px}
+.hdr .logo span{color:var(--yellow)}
+.hdr h1{font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:800;color:var(--wh);letter-spacing:-.03em;line-height:1.1;margin-bottom:8px}
+.hdr p{font-size:.88rem;color:var(--g4);max-width:460px;margin:0 auto}
+
+/* Progress */
+.progress-wrap{padding:20px 0;background:var(--wh);border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:10}
+.progress-bar{height:6px;background:#e5e7eb;border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#6e5bff);border-radius:100px;transition:width .4s ease}
+.progress-text{display:flex;justify-content:space-between;margin-top:8px;font-size:.72rem;color:var(--g4);font-weight:500}
+
+/* Question Card */
+.q-section{padding:32px 0;flex:1}
+.q-card{background:var(--wh);border:1px solid #e5e7eb;border-radius:12px;padding:28px;margin-bottom:20px;display:none}
+.q-card.active{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.q-num{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.q-text{font-size:1.05rem;font-weight:700;color:var(--dark);line-height:1.3;margin-bottom:20px}
+.q-help{font-size:.78rem;color:var(--g5);margin-bottom:16px;line-height:1.5;font-style:italic}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{padding:14px 18px;border:1.5px solid #e5e7eb;border-radius:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;font-size:.88rem;font-weight:500}
+.opt:hover{border-color:var(--dark);background:var(--off)}
+.opt.selected{border-color:var(--blue);background:rgba(52,28,255,.04)}
+.opt-dot{width:18px;height:18px;min-width:18px;border-radius:50%;border:2px solid #e5e7eb;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.opt.selected .opt-dot{border-color:var(--blue);background:var(--blue)}
+.opt.selected .opt-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--wh)}
+.opt-label{flex:1}
+
+/* Navigation */
+.q-nav{display:flex;justify-content:space-between;margin-top:20px}
+.btn{padding:12px 24px;border-radius:8px;font:600 .85rem/1 var(--f);border:0;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.97)}
+.btn-next{background:var(--blue);color:var(--wh)}.btn-next:hover{background:var(--blue-h)}
+.btn-next:disabled{background:var(--g3);cursor:not-allowed}
+.btn-back{background:transparent;color:var(--g5);border:1.5px solid #e5e7eb}.btn-back:hover{border-color:var(--dark)}
+
+/* Results */
+.results{display:none;padding:32px 0}
+.results.show{display:block;animation:fadeUp .4s ease}
+.r-card{background:var(--wh);border:1px solid #e5e7eb;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px}
+.r-score{font-size:3.2rem;font-weight:800;letter-spacing:-.04em;line-height:1}
+.r-score.high{color:var(--green)}.r-score.mid{color:var(--amber)}.r-score.low{color:var(--red)}
+.r-label{font-size:.88rem;font-weight:600;color:var(--g5);margin-top:6px}
+.r-verdict{font-size:1.1rem;font-weight:700;color:var(--dark);margin-top:16px}
+.r-desc{font-size:.88rem;color:var(--g5);margin-top:6px;line-height:1.6;max-width:440px;margin-left:auto;margin-right:auto}
+.r-emoji{font-size:2.4rem;margin-bottom:8px}
+
+/* Breakdown */
+.breakdown{background:var(--wh);border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:20px}
+.bd-title{padding:14px 20px;font-size:.82rem;font-weight:700;color:var(--dark);border-bottom:1px solid #e5e7eb;background:var(--off)}
+.bd-row{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #f3f4f6}
+.bd-row:last-child{border-bottom:0}
+.bd-cat{font-size:.82rem;font-weight:600;color:var(--dark)}
+.bd-score{font-size:.82rem;font-weight:700;padding:3px 10px;border-radius:4px}
+.bd-high{background:rgba(29,185,84,.08);color:var(--green)}
+.bd-mid{background:rgba(245,158,11,.08);color:var(--amber)}
+.bd-low{background:rgba(239,68,68,.08);color:var(--red)}
+
+/* Recommendations */
+.recs{background:var(--wh);border:1px solid #e5e7eb;border-radius:12px;padding:24px;margin-bottom:20px}
+.recs h3{font-size:.92rem;font-weight:700;color:var(--dark);margin-bottom:14px}
+.rec-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f3f4f6;font-size:.82rem;color:var(--g6);line-height:1.5}
+.rec-item:last-child{border-bottom:0}
+.rec-icon{width:20px;height:20px;min-width:20px;border-radius:5px;background:rgba(52,28,255,.08);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:var(--blue)}
+
+/* Cleo tip callout */
+.cleo-tip{background:var(--dark);border-radius:12px;padding:20px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start}
+.cleo-tip .avatar{width:36px;height:36px;min-width:36px;border-radius:10px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:var(--wh)}
+.cleo-tip .bubble{flex:1}
+.cleo-tip .bubble p{font-size:.85rem;color:rgba(255,255,255,.85);line-height:1.6;margin:0}
+.cleo-tip .bubble p strong{color:var(--yellow)}
+
+/* Email Gate */
+.gate{background:var(--dark);border-radius:12px;padding:32px;text-align:center;margin-bottom:20px}
+.gate h3{font-size:1rem;font-weight:700;color:var(--wh);margin-bottom:6px}
+.gate p{font-size:.82rem;color:var(--g4);margin-bottom:16px}
+.gate-form{display:flex;gap:8px;max-width:400px;margin:0 auto}
+.gate-input{flex:1;padding:12px 14px;border-radius:8px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--wh);font:500 .85rem/1 var(--f);outline:none}
+.gate-input:focus{border-color:var(--yellow)}
+.gate-input::placeholder{color:var(--g4)}
+.gate-btn{padding:12px 20px;border-radius:8px;background:var(--yellow);color:var(--dark);font:700 .85rem/1 var(--f);border:0;cursor:pointer}
+.gate-btn:hover{background:#f5d85a}
+.gate-note{font-size:.7rem;color:var(--g4);margin-top:10px}
+
+/* Blurred overlay for gated content */
+.gated-content{position:relative}
+.gated-content.locked .gated-blur{filter:blur(6px);pointer-events:none;user-select:none}
+.gated-content.locked .gate-overlay{display:flex}
+.gate-overlay{display:none;position:absolute;top:0;left:0;right:0;bottom:0;align-items:center;justify-content:center;z-index:5;background:rgba(255,255,255,.5);border-radius:12px}
+.gate-overlay-inner{background:var(--dark);border-radius:12px;padding:28px;text-align:center;max-width:380px;width:90%}
+.gate-overlay-inner h3{font-size:.95rem;font-weight:700;color:var(--wh);margin-bottom:6px}
+.gate-overlay-inner p{font-size:.8rem;color:var(--g4);margin-bottom:14px}
+
+/* CTA section in results */
+.cta-section{background:var(--purple);border-radius:12px;padding:28px;text-align:center;margin-bottom:20px}
+.cta-section h3{font-size:1rem;font-weight:700;color:var(--wh);margin-bottom:6px}
+.cta-section p{font-size:.85rem;color:rgba(255,255,255,.7);margin-bottom:16px;line-height:1.6}
+.cta-section .btn{background:var(--yellow);color:var(--dark);font-weight:700;padding:14px 28px;font-size:.9rem}
+.cta-section .btn:hover{background:#f5d85a}
+
+/* Footer */
+footer{padding:20px 0;text-align:center}
+footer p{font-size:.68rem;color:var(--g4)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr"><div class="wrap">
+<div class="logo">cleo<span>.</span></div>
+<h1>Financial Wellness Score</h1>
+<p>8 questions. 2 minutes. Find out where your money habits actually stand. Then Cleo will tell you what to fix.</p>
+</div></div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap"><div class="wrap">
+<div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+<div class="progress-text"><span id="progLabel">Question 1 of 8</span><span id="progPct">0%</span></div>
+</div></div>
+
+<!-- QUESTIONS -->
+<section class="q-section"><div class="wrap">
+
+<!-- Q1: Monthly savings rate -->
+<div class="q-card active" data-q="1">
+<div class="q-num">Question 1 of 8 — Savings</div>
+<div class="q-text">How much of your monthly income do you save?</div>
+<div class="q-help">Be honest. This is between you and Cleo. (She will roast you later either way.)</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="savings"><span class="opt-dot"></span><span class="opt-label">Nothing. It all goes by payday.</span></div>
+<div class="opt" data-val="2" data-cat="savings"><span class="opt-dot"></span><span class="opt-label">Under 5%. Whatever is left over.</span></div>
+<div class="opt" data-val="3" data-cat="savings"><span class="opt-dot"></span><span class="opt-label">5% to 15%. I try to save something every month.</span></div>
+<div class="opt" data-val="4" data-cat="savings"><span class="opt-dot"></span><span class="opt-label">Over 15%. I have a system.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back" disabled>Back</button><button class="btn btn-next" disabled>Next</button></div>
+</div>
+
+<!-- Q2: Emergency fund -->
+<div class="q-card" data-q="2">
+<div class="q-num">Question 2 of 8 — Safety Net</div>
+<div class="q-text">If you lost your income tomorrow, how long could you cover your bills?</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="emergency"><span class="opt-dot"></span><span class="opt-label">I would be in trouble by next week.</span></div>
+<div class="opt" data-val="2" data-cat="emergency"><span class="opt-dot"></span><span class="opt-label">About 2 to 4 weeks. Tight but possible.</span></div>
+<div class="opt" data-val="3" data-cat="emergency"><span class="opt-dot"></span><span class="opt-label">1 to 3 months. I have some savings set aside.</span></div>
+<div class="opt" data-val="4" data-cat="emergency"><span class="opt-dot"></span><span class="opt-label">3+ months. My emergency fund is solid.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back">Back</button><button class="btn btn-next" disabled>Next</button></div>
+</div>
+
+<!-- Q3: Subscription awareness -->
+<div class="q-card" data-q="3">
+<div class="q-num">Question 3 of 8 — Subscriptions</div>
+<div class="q-text">Do you know exactly how much you spend on subscriptions every month?</div>
+<div class="q-help">Netflix, Spotify, gym, apps, cloud storage, that meditation app you used twice.</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="subscriptions"><span class="opt-dot"></span><span class="opt-label">No clue. I am scared to check.</span></div>
+<div class="opt" data-val="2" data-cat="subscriptions"><span class="opt-dot"></span><span class="opt-label">I know the big ones. But there are probably a few I forgot.</span></div>
+<div class="opt" data-val="3" data-cat="subscriptions"><span class="opt-dot"></span><span class="opt-label">I review them every few months and cancel what I don't use.</span></div>
+<div class="opt" data-val="4" data-cat="subscriptions"><span class="opt-dot"></span><span class="opt-label">I track every single one. Nothing slips through.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back">Back</button><button class="btn btn-next" disabled>Next</button></div>
+</div>
+
+<!-- Q4: Spending tracking method -->
+<div class="q-card" data-q="4">
+<div class="q-num">Question 4 of 8 — Tracking</div>
+<div class="q-text">How do you currently track your spending?</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="tracking"><span class="opt-dot"></span><span class="opt-label">I don't. I check my balance and hope for the best.</span></div>
+<div class="opt" data-val="2" data-cat="tracking"><span class="opt-dot"></span><span class="opt-label">I glance at my bank app's spending categories sometimes.</span></div>
+<div class="opt" data-val="3" data-cat="tracking"><span class="opt-dot"></span><span class="opt-label">I use a budgeting app or spreadsheet regularly.</span></div>
+<div class="opt" data-val="4" data-cat="tracking"><span class="opt-dot"></span><span class="opt-label">I track every pound. I know exactly where my money goes.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back">Back</button><button class="btn btn-next" disabled>Next</button></div>
+</div>
+
+<!-- Q5: Debt management -->
+<div class="q-card" data-q="5">
+<div class="q-num">Question 5 of 8 — Debt</div>
+<div class="q-text">How are you managing any debt you have? (Credit cards, overdrafts, loans, buy now pay later.)</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="debt"><span class="opt-dot"></span><span class="opt-label">I am behind on payments or only making minimums.</span></div>
+<div class="opt" data-val="2" data-cat="debt"><span class="opt-dot"></span><span class="opt-label">I am making payments but don't have a clear plan.</span></div>
+<div class="opt" data-val="3" data-cat="debt"><span class="opt-dot"></span><span class="opt-label">I have a payoff plan and I am sticking to it.</span></div>
+<div class="opt" data-val="4" data-cat="debt"><span class="opt-dot"></span><span class="opt-label">I have no debt. Or I pay everything off in full every month.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back">Back</button><button class="btn btn-next" disabled>Next</button></div>
+</div>
+
+<!-- Q6: Financial goal clarity -->
+<div class="q-card" data-q="6">
+<div class="q-num">Question 6 of 8 — Goals</div>
+<div class="q-text">Do you have a clear financial goal you are working toward right now?</div>
+<div class="q-help">A holiday fund, a deposit, paying off a card, building an emergency cushion. Anything specific.</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="goals"><span class="opt-dot"></span><span class="opt-label">No. I am just trying to get through the month.</span></div>
+<div class="opt" data-val="2" data-cat="goals"><span class="opt-dot"></span><span class="opt-label">I have a vague idea. "Save more." But no number or deadline.</span></div>
+<div class="opt" data-val="3" data-cat="goals"><span class="opt-dot"></span><span class="opt-label">Yes. I have a specific amount and a rough timeline.</span></div>
+<div class="opt" data-val="4" data-cat="goals"><span class="opt-dot"></span><span class="opt-label">I have 2+ financial goals with amounts, deadlines, and progress tracking.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back">Back</button><button class="btn btn-next" disabled>Next</button></div>
+</div>
+
+<!-- Q7: Money anxiety level -->
+<div class="q-card" data-q="7">
+<div class="q-num">Question 7 of 8 — Anxiety</div>
+<div class="q-text">How often do you feel stressed or anxious about money?</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="anxiety"><span class="opt-dot"></span><span class="opt-label">Every day. It is always on my mind.</span></div>
+<div class="opt" data-val="2" data-cat="anxiety"><span class="opt-dot"></span><span class="opt-label">A few times a week. Especially before payday.</span></div>
+<div class="opt" data-val="3" data-cat="anxiety"><span class="opt-dot"></span><span class="opt-label">Occasionally. But I mostly feel in control.</span></div>
+<div class="opt" data-val="4" data-cat="anxiety"><span class="opt-dot"></span><span class="opt-label">Rarely. I know where I stand and I feel confident about it.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back">Back</button><button class="btn btn-next" disabled>Next</button></div>
+</div>
+
+<!-- Q8: Budgeting tool usage -->
+<div class="q-card" data-q="8">
+<div class="q-num">Question 8 of 8 — Tools</div>
+<div class="q-text">Are you using any tool or app to help manage your money right now?</div>
+<div class="opts">
+<div class="opt" data-val="1" data-cat="tools"><span class="opt-dot"></span><span class="opt-label">Nothing. Just my bank app and vibes.</span></div>
+<div class="opt" data-val="2" data-cat="tools"><span class="opt-dot"></span><span class="opt-label">I tried an app but stopped using it after a few days.</span></div>
+<div class="opt" data-val="3" data-cat="tools"><span class="opt-dot"></span><span class="opt-label">I use a budgeting app or spreadsheet somewhat regularly.</span></div>
+<div class="opt" data-val="4" data-cat="tools"><span class="opt-dot"></span><span class="opt-label">I use a dedicated tool daily and it works for me.</span></div>
+</div>
+<div class="q-nav"><button class="btn btn-back">Back</button><button class="btn btn-next">See My Score</button></div>
+</div>
+
+</div></section>
+
+<!-- RESULTS -->
+<section class="results" id="results"><div class="wrap">
+
+<!-- Score card -->
+<div class="r-card" id="rCard">
+<div class="r-emoji" id="rEmoji"></div>
+<div class="r-score" id="rScore">--</div>
+<div class="r-label">out of 32</div>
+<div class="r-verdict" id="rVerdict"></div>
+<div class="r-desc" id="rDesc"></div>
+</div>
+
+<!-- Cleo roast -->
+<div class="cleo-tip" id="cleoRoast">
+<div class="avatar">C</div>
+<div class="bubble"><p id="roastText"></p></div>
+</div>
+
+<!-- Breakdown -->
+<div class="breakdown">
+<div class="bd-title">Your score by category</div>
+<div id="breakdown"></div>
+</div>
+
+<!-- EMAIL GATE -->
+<div class="gate" id="emailGate">
+<h3>See your full results and personalised tips</h3>
+<p>Enter your email. Cleo will send your complete breakdown with specific actions for each category.</p>
+<div class="gate-form">
+<input type="email" class="gate-input" placeholder="Your email" id="gateEmail">
+<button class="gate-btn" id="gateBtn">Show My Results</button>
+</div>
+<div class="gate-note">No spam. Just your results and one follow up. Unsubscribe anytime.</div>
+</div>
+
+<!-- Gated content: recs + tips -->
+<div class="gated-content locked" id="gatedContent">
+<div class="gate-overlay">
+<div class="gate-overlay-inner">
+<h3>Enter your email above to unlock</h3>
+<p>Your personalised recommendations are ready.</p>
+</div>
+</div>
+
+<div class="gated-blur">
+<!-- Recommendations -->
+<div class="recs" id="recs">
+<h3>Your top recommendations</h3>
+</div>
+
+<!-- Score-specific Cleo tips -->
+<div class="recs" id="cleoTips">
+<h3>Cleo says: here is what to do first</h3>
+</div>
+</div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+<h3>Want Cleo to fix this for you?</h3>
+<p>Cleo connects to your bank, analyses your spending, and coaches you on what to change. It takes 2 minutes to set up. Free to start.</p>
+<a href="https://apps.apple.com/gb/app/cleo-budget-cash-advance/id1214803498" class="btn" target="_blank">Download Cleo Free</a>
+<p style="margin-top:10px;font-size:.75rem;color:rgba(255,255,255,.5)">iOS and Android. Works with any UK bank. No card needed.</p>
+</div>
+
+</div></section>
+
+<!-- FOOTER -->
+<footer><div class="wrap">
+<p>Financial Wellness Score by Cleo | Lead magnet concept by MDB Growth Capital</p>
+</div></footer>
+
+<script>
+const cards=document.querySelectorAll('.q-card');
+const fill=document.getElementById('progFill');
+const progLabel=document.getElementById('progLabel');
+const progPct=document.getElementById('progPct');
+let current=0;
+const answers=new Array(8).fill(0);
+const categories=['Savings Rate','Emergency Fund','Subscription Awareness','Spending Tracking','Debt Management','Financial Goals','Money Anxiety','Budgeting Tools'];
+const catKeys=['savings','emergency','subscriptions','tracking','debt','goals','anxiety','tools'];
+
+// Option selection
+document.querySelectorAll('.opt').forEach(opt=>{
+  opt.addEventListener('click',()=>{
+    const card=opt.closest('.q-card');
+    card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    card.querySelector('.btn-next').disabled=false;
+    const qi=parseInt(card.dataset.q)-1;
+    answers[qi]=parseInt(opt.dataset.val);
+  });
+});
+
+// Navigation
+document.querySelectorAll('.btn-next').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(btn.disabled)return;
+    if(current<7){
+      cards[current].classList.remove('active');
+      current++;
+      cards[current].classList.add('active');
+      updateProgress();
+    }else{
+      showResults();
+    }
+  });
+});
+
+document.querySelectorAll('.btn-back').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(current>0){
+      cards[current].classList.remove('active');
+      current--;
+      cards[current].classList.add('active');
+      updateProgress();
+    }
+  });
+});
+
+function updateProgress(){
+  const pct=Math.round(((current)/8)*100);
+  fill.style.width=pct+'%';
+  progLabel.textContent='Question '+(current+1)+' of 8';
+  progPct.textContent=pct+'%';
+}
+
+function showResults(){
+  document.querySelector('.q-section').style.display='none';
+  document.querySelector('.progress-wrap').style.display='none';
+  const r=document.getElementById('results');
+  r.classList.add('show');
+
+  const total=answers.reduce((a,b)=>a+b,0);
+  const scoreEl=document.getElementById('rScore');
+  const verdictEl=document.getElementById('rVerdict');
+  const descEl=document.getElementById('rDesc');
+  const emojiEl=document.getElementById('rEmoji');
+  const roastEl=document.getElementById('roastText');
+
+  scoreEl.textContent=total;
+
+  let verdict,desc,cls,emoji,roast;
+  if(total>=28){
+    verdict='Money Master';
+    desc='You are in the top tier. Your money habits are strong. You save, you track, you plan. Most people your age are nowhere near this. Keep it up.';
+    cls='high';emoji='&#128081;';
+    roast='Okay, flex. You are actually good with money. I almost have nothing to roast. Almost. You still took this quiz instead of investing that 2 minutes. But seriously, you are doing better than 90% of people I talk to. <strong>Keep going.</strong>';
+  }else if(total>=20){
+    verdict='Getting There';
+    desc='You have solid foundations. A few gaps are holding you back from real financial confidence. The good news: they are fixable. Fast.';
+    cls='mid';emoji='&#128170;';
+    roast='Not bad. Not great. You are like someone who goes to the gym but skips leg day. The basics are there but <strong>2 to 3 areas need attention.</strong> Fix those and you will stop waking up at 3am thinking about your bank balance.';
+  }else if(total>=12){
+    verdict='Needs Work';
+    desc='You are aware of the problem. That is step one. But your money habits need some serious attention before things get easier.';
+    cls='mid';emoji='&#128556;';
+    roast='Right. We need to talk. You are not broke because you are bad with money. You are broke because <strong>nobody taught you this stuff</strong> and checking your bank balance does not count as a financial strategy. Let me show you what to fix first.';
+  }else{
+    verdict='SOS Mode';
+    desc='Your money is running you instead of the other way around. No judgement. Most people start here. But staying here is optional.';
+    cls='low';emoji='&#128680;';
+    roast='Okay, deep breath. Your score is low but <strong>that is not a life sentence.</strong> It means you have been winging it and it is not working. The good news: the fixes are simpler than you think. You don\'t need a finance degree. You need someone to tell you exactly what to do. <strong>That is literally what I do.</strong>';
+  }
+
+  scoreEl.className='r-score '+cls;
+  verdictEl.textContent=verdict;
+  descEl.textContent=desc;
+  emojiEl.innerHTML=emoji;
+  roastEl.innerHTML=roast;
+
+  // Breakdown
+  const bd=document.getElementById('breakdown');
+  bd.innerHTML='';
+  answers.forEach((a,i)=>{
+    const row=document.createElement('div');
+    row.className='bd-row';
+    let scoreCls=a>=3?'bd-high':a===2?'bd-mid':'bd-low';
+    let scoreLabel=a>=3?'Strong':a===2?'OK':'Weak';
+    row.innerHTML='<span class="bd-cat">'+categories[i]+'</span><span class="bd-score '+scoreCls+'">'+scoreLabel+' ('+a+'/4)</span>';
+    bd.appendChild(row);
+  });
+
+  // Recommendations
+  const recsEl=document.getElementById('recs');
+  const weakAreas=answers.map((a,i)=>({cat:categories[i],score:a,idx:i})).filter(x=>x.score<=2).sort((a,b)=>a.score-b.score);
+
+  const recTexts={
+    0:'You are not saving anything (or close to nothing). Start with 1%. Just 1% of your income into a separate pot every payday. Automate it so you do not have to think about it. Cleo can do this for you automatically.',
+    1:'You have no safety net. That means one unexpected bill could spiral into debt. Target: GBP 500 emergency fund first. Then build to one month of expenses. Even GBP 20 a week gets you to GBP 500 in 6 months.',
+    2:'Hidden subscriptions are eating your money. The average person wastes GBP 30 to 50 a month on forgotten subscriptions. Audit every recurring charge this week. Cancel anything you have not used in 30 days. Cleo spots these automatically.',
+    3:'You are not tracking your spending. That means you do not know where your money goes. You cannot fix what you cannot see. Connecting Cleo to your bank gives you an instant spending breakdown. No spreadsheet needed.',
+    4:'Debt without a plan grows. List every debt you have: amount, interest rate, minimum payment. Pay minimums on everything. Put any extra toward the highest interest rate first. This is called the avalanche method. It saves the most money.',
+    5:'You do not have a clear goal. "Save more" is not a goal. "Save GBP 1,000 by December" is a goal. Pick one thing. Put a number on it. Put a date on it. Cleo can track it for you and nudge you when you fall behind.',
+    6:'Money anxiety is running your life. That usually means you avoid looking at your finances which makes the anxiety worse. Breaking the cycle starts with checking your balance every day. Not to stress. Just to know. Cleo makes this feel less scary with humour and encouragement.',
+    7:'You do not have a system. Every budgeting attempt failed because willpower alone does not work. You need a tool that automates the boring parts. Cleo connects to your bank, categorises spending, and alerts you before you overspend. Setup takes 2 minutes.'
+  };
+
+  let recsHTML='<h3>Your top recommendations</h3>';
+  if(weakAreas.length===0){
+    recsHTML+='<div class="rec-item"><span class="rec-icon">+</span><span>No weak areas. You are ahead of 90% of your peers. Focus on optimising: higher savings rate, better investment allocation, and building passive income streams.</span></div>';
+  }else{
+    weakAreas.slice(0,4).forEach(w=>{
+      recsHTML+='<div class="rec-item"><span class="rec-icon">+</span><span>'+recTexts[w.idx]+'</span></div>';
+    });
+  }
+  recsEl.innerHTML=recsHTML;
+
+  // Cleo tips per score range
+  const tipsEl=document.getElementById('cleoTips');
+  let tipsHTML='<h3>Cleo says: here is what to do first</h3>';
+
+  if(total>=28){
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">1</span><span>You are already ahead. Consider: are you earning interest on your savings? A high interest savings account or ISA could put your money to work while you sleep.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">2</span><span>Review your spending once a month with Cleo. Even good habits drift. A 5 minute monthly check keeps you sharp.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">3</span><span>Set your next big goal. GBP 10,000 emergency fund? A house deposit? A career break fund? Give your savings a purpose and they grow faster.</span></div>';
+  }else if(total>=20){
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">1</span><span>Fix your weakest category first. One change. This week. If subscriptions are weak, cancel 3 things today. If savings are weak, set up GBP 25 auto-transfer to a savings pot.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">2</span><span>Connect Cleo to your bank. Let the AI find your spending leaks. Most people find GBP 50 to 100 in wasted monthly spend they did not know about.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">3</span><span>Set one 90 day financial goal. Not a year. 90 days. Short enough to stay motivated. Long enough to see real progress.</span></div>';
+  }else if(total>=12){
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">1</span><span>Stop avoiding your bank balance. Check it every morning. Just look. Do not judge. The anxiety comes from not knowing. Knowing is the cure.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">2</span><span>Download Cleo and connect your bank. In 2 minutes you will have a complete picture of where your money goes. The AI does the hard part.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">3</span><span>Start a GBP 500 emergency fund. Just GBP 500. That one buffer prevents 80% of financial emergencies from becoming financial crises.</span></div>';
+  }else{
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">1</span><span>Do not panic. A low score does not mean you are bad with money. It means you have not had the right tools. That changes today.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">2</span><span>Download Cleo right now. Connect your bank. Let the AI show you exactly where your money goes. No spreadsheets. No homework. Just answers.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">3</span><span>This week: find and cancel 2 subscriptions you forgot about. That alone could save you GBP 20+ a month. GBP 240 a year. For 5 minutes of work.</span></div>';
+    tipsHTML+='<div class="rec-item"><span class="rec-icon">4</span><span>Set up one automatic saving. GBP 10 a week. Into a separate pot. Do not touch it. In 3 months you will have GBP 130 you did not have before. That is your emergency fund starting.</span></div>';
+  }
+  tipsEl.innerHTML=tipsHTML;
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Email gate
+document.getElementById('gateBtn').addEventListener('click',()=>{
+  const email=document.getElementById('gateEmail').value;
+  if(email&&email.includes('@')&&email.includes('.')){
+    document.getElementById('emailGate').innerHTML='<h3 style="color:var(--yellow)">Done. Your full results are unlocked below.</h3><p style="color:var(--g4)">We sent your complete breakdown to '+email+'. Check your inbox.</p>';
+    document.getElementById('gatedContent').classList.remove('locked');
+  }
+});
+</script>
+</body>
+</html>

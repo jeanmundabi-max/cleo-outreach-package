@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleo — AI Money Coach for the UK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--blue:#341CFF;--blue-h:#2a15d9;--purple:#21248D;--yellow:#FFE36D;--yellow-dim:rgba(255,227,109,.12);
+--zircon:#F2F6FF;--green:#1DB954;--green-dim:rgba(29,185,84,.08);
+--dark:#0f0f2d;--dark-s:#1a1a40;--wh:#ffffff;--off:#f8f9ff;
+--g3:#d1d5db;--g4:#9ca3af;--g5:#6b7280;--g6:#4b5563;--g7:#374151;
+--red:#ef4444;--amber:#f59e0b;
+--f:'DM Sans',system-ui,sans-serif;--mx:1080px;--r:12px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;font-size:18px}
+body{font-family:var(--f);color:var(--dark);line-height:1.65;background:var(--wh);overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}.d4{transition-delay:.24s}
+.w{max-width:var(--mx);margin:0 auto;padding:0 24px}
+section{padding:96px 0}
+@media(max-width:640px){section{padding:60px 0}.w{padding:0 16px}}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:8px;font:600 .9rem/1 var(--f);border:0;cursor:pointer;transition:all .15s}
+.btn:active{transform:scale(.97)}
+.b-bl{background:var(--blue);color:var(--wh)}.b-bl:hover{background:var(--blue-h)}
+.b-yl{background:var(--yellow);color:var(--dark);font-weight:700}.b-yl:hover{background:#f5d85a}
+.b-dk{background:var(--dark);color:var(--wh)}.b-dk:hover{background:var(--dark-s)}
+.b-gh{background:transparent;color:var(--dark);border:1.5px solid var(--g3)}.b-gh:hover{border-color:var(--dark)}
+
+/* Top Bar */
+.tb{background:var(--blue);color:var(--wh);text-align:center;padding:10px 16px;font-size:.8rem;font-weight:500}
+.tb span{color:var(--yellow)}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid #e5e7eb}
+.ni{display:flex;align-items:center;justify-content:space-between;height:58px}
+.nl{font-weight:800;font-size:1.15rem;color:var(--purple)}
+.nl span{color:var(--blue)}
+.nr{display:flex;gap:24px;align-items:center}
+.nr a{font-size:.82rem;color:var(--g5);font-weight:500}.nr a:hover{color:var(--dark)}
+.nc .btn{padding:9px 18px;font-size:.8rem}
+@media(max-width:768px){.nr{display:none}}
+
+/* Section headers */
+.sl{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.st{font-size:clamp(1.45rem,3.2vw,2.1rem);font-weight:700;line-height:1.12;letter-spacing:-.025em;margin-bottom:12px}
+.ss{font-size:.95rem;color:var(--g5);max-width:520px;margin-bottom:36px;line-height:1.7}
+
+/* Hero */
+.hero{padding:72px 0 88px;background:linear-gradient(180deg,var(--zircon) 0%,var(--wh) 100%)}
+.hg{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:768px){.hg{grid-template-columns:1fr;gap:28px}}
+.ht{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;background:var(--yellow-dim);border:1px solid rgba(255,227,109,.3);font-size:.72rem;font-weight:600;margin-bottom:18px;color:var(--purple)}
+.ht .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pp 2s infinite}
+@keyframes pp{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(1.9rem,4.2vw,2.8rem);font-weight:800;line-height:1.08;letter-spacing:-.035em;margin-bottom:14px;color:var(--dark)}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hp{font-size:.95rem;color:var(--g6);max-width:440px;margin-bottom:24px;line-height:1.7}
+.hc{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.hpr{font-size:.88rem;color:var(--g6);font-weight:500;margin-top:4px}.hpr strong{color:var(--dark);font-weight:700}
+
+/* Hero phone mockup */
+.hv{background:var(--dark);border-radius:24px;padding:32px 24px;display:flex;flex-direction:column;gap:16px;color:var(--wh);position:relative;overflow:hidden}
+.hv::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(52,28,255,.3),transparent 65%);pointer-events:none}
+.hv-msg{background:rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;font-size:.85rem;line-height:1.5}
+.hv-msg.cleo{border-left:3px solid var(--blue);background:rgba(52,28,255,.12)}
+.hv-msg.user{border-left:3px solid var(--yellow);background:rgba(255,227,109,.08);text-align:right}
+.hv-label{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);margin-bottom:4px}
+
+/* Social Proof Bar */
+.spb{background:var(--dark);padding:48px 0}
+.spg{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+@media(max-width:640px){.spg{grid-template-columns:repeat(2,1fr)}}
+.sn{font-size:1.9rem;font-weight:800;color:var(--yellow);line-height:1}.slb{font-size:.75rem;color:var(--g4);margin-top:5px}
+
+/* Problem */
+.pg{border:1px solid #e5e7eb;border-radius:var(--r);overflow:hidden}
+.pr{display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid #e5e7eb;transition:background .1s}
+.pr:last-child{border-bottom:0}.pr:hover{background:var(--off)}
+.pn{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:var(--blue);border-right:1px solid #e5e7eb}
+.pc{padding:18px 22px}
+.pc h3{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.pc p{font-size:.82rem;color:var(--g5);line-height:1.6;margin:0}
+
+/* Solution */
+.solbg{background:var(--off)}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.sc{background:var(--wh);border:1px solid #e5e7eb;border-radius:var(--r);padding:28px 24px;transition:border-color .15s}
+.sc:hover{border-color:var(--blue)}
+.si{width:36px;height:36px;border-radius:8px;background:rgba(52,28,255,.08);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;color:var(--blue);margin-bottom:14px}
+.sc h3{font-size:.9rem;font-weight:700;margin-bottom:5px}
+.sc p{font-size:.82rem;color:var(--g5);line-height:1.6;margin:0}
+
+/* How it works */
+.howbg{background:var(--off)}
+.hl{counter-reset:hw;max-width:600px}
+.hi{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:20px 0;border-bottom:1px solid #e5e7eb}
+.hi:last-child{border-bottom:0}
+.hn{counter-increment:hw;width:38px;height:38px;border-radius:8px;background:var(--blue);color:var(--yellow);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem}
+.hn::before{content:counter(hw)}
+.hx h3{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.hx p{font-size:.82rem;color:var(--g5);margin:0;line-height:1.6}
+.hx .tm{font-size:.72rem;font-weight:600;color:var(--blue);margin-top:5px;display:inline-block}
+
+/* Feature Grid */
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.fc-card{background:var(--wh);border:1px solid #e5e7eb;border-radius:var(--r);padding:24px 20px;transition:border-color .15s;text-align:center}
+.fc-card:hover{border-color:var(--blue)}
+.fc-icon{width:48px;height:48px;border-radius:12px;background:var(--yellow-dim);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 14px}
+.fc-card h3{font-size:.88rem;font-weight:700;margin-bottom:5px}
+.fc-card p{font-size:.8rem;color:var(--g5);line-height:1.6;margin:0}
+
+/* Comparison Table */
+.cw{border:1px solid #e5e7eb;border-radius:var(--r);overflow-x:auto;background:var(--wh)}
+.cw table{width:100%;border-collapse:collapse;min-width:620px;font-size:.82rem}
+.cw thead{background:var(--off)}
+.cw th{padding:13px 16px;text-align:left;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g5);border-bottom:1px solid #e5e7eb}
+.cw td{padding:12px 16px;border-bottom:1px solid #f3f4f6}
+.cw tr:last-child td{border-bottom:0}
+.cw .cp{background:rgba(52,28,255,.04)}
+.cw .cp th{color:var(--dark);font-weight:800}
+.cw .win{font-weight:700;color:var(--dark)}.cw .lose{color:var(--g4)}
+
+/* User Results */
+.ur-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.ur-card{border:1px solid #e5e7eb;border-radius:var(--r);padding:24px;background:var(--wh)}
+.ur-card .stars{color:var(--yellow);font-size:.85rem;margin-bottom:10px;letter-spacing:1px}
+.ur-card blockquote{font-size:.88rem;color:var(--dark);line-height:1.6;margin-bottom:14px;font-weight:500}
+.ur-card cite{font-size:.78rem;color:var(--g5);font-style:normal}
+.ur-card cite strong{color:var(--dark);display:block}
+.ur-card .met{display:inline-block;margin-top:8px;padding:3px 8px;border-radius:4px;background:var(--green-dim);font-size:.72rem;font-weight:700;color:var(--green)}
+
+/* Security / FCA */
+.sec-bg{background:var(--dark)}
+.sec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.sec-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px 20px}
+.sec-card h3{font-size:.88rem;font-weight:700;color:var(--wh);margin-bottom:6px}
+.sec-card p{font-size:.82rem;color:var(--g4);line-height:1.6;margin:0}
+.sec-icon{width:36px;height:36px;border-radius:8px;background:rgba(255,227,109,.1);display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:12px}
+
+/* Video testimonials */
+.vtbg{background:var(--off)}
+.vt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:768px){.vt-grid{grid-template-columns:1fr}}
+.vt-card{border-radius:var(--r);overflow:hidden;background:var(--wh);border:1px solid #e5e7eb}
+.vt-vid{aspect-ratio:16/9;background:var(--dark);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
+.vt-vid .pb{width:48px;height:48px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;transition:transform .2s}
+.vt-vid .pb:hover{transform:scale(1.06)}
+.vt-vid .pb::after{content:'';border-style:solid;border-width:8px 0 8px 14px;border-color:transparent transparent transparent var(--wh);margin-left:3px}
+.vt-body{padding:18px 20px}
+.vt-body blockquote{font-size:.85rem;font-weight:600;color:var(--dark);line-height:1.45;margin-bottom:10px}
+.vt-body cite{font-size:.75rem;color:var(--g5);font-style:normal}
+.vt-body cite strong{color:var(--dark);display:block}
+
+/* App Download CTAs */
+.dl-grid{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.dl-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;background:var(--dark);border-radius:10px;color:var(--wh);transition:background .15s}
+.dl-btn:hover{background:var(--dark-s)}
+.dl-btn .dl-icon{font-size:1.4rem}
+.dl-btn .dl-text{text-align:left}
+.dl-btn .dl-text small{font-size:.6rem;display:block;color:var(--g4);font-weight:500}
+.dl-btn .dl-text span{font-size:.9rem;font-weight:700}
+
+/* FAQ */
+.fl{max-width:640px}
+.fq{border-bottom:1px solid #e5e7eb}
+.fq-q{padding:16px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.88rem;user-select:none;gap:12px}
+.fq-q .ic{width:22px;height:22px;min-width:22px;border-radius:6px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--g5);transition:transform .25s,background .25s}
+.fq.open .fq-q .ic{transform:rotate(45deg);background:rgba(52,28,255,.1);color:var(--blue)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:.85rem;color:var(--g5);line-height:1.7}
+.fq.open .fq-a{max-height:320px;padding-bottom:16px}
+
+/* Golden Hippo Offer */
+.ghbg{background:var(--purple);position:relative;overflow:hidden}
+.ghbg::before{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;background:radial-gradient(circle,rgba(52,28,255,.4),transparent 60%);pointer-events:none}
+.gh-inner{position:relative;z-index:1;text-align:center;max-width:600px;margin:0 auto}
+.gh-inner h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;color:var(--wh);margin-bottom:12px;line-height:1.15}
+.gh-inner p{font-size:.92rem;color:rgba(255,255,255,.7);margin-bottom:28px;line-height:1.7}
+.gh-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;text-align:left}
+@media(max-width:640px){.gh-features{grid-template-columns:1fr}}
+.gh-feat{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;color:rgba(255,255,255,.85)}
+.gh-check{width:20px;height:20px;min-width:20px;border-radius:6px;background:rgba(255,227,109,.15);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--yellow);font-weight:800}
+
+/* Final CTA */
+.final-cta{background:var(--dark);text-align:center;position:relative;overflow:hidden}
+.final-cta::before{content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(52,28,255,.08),transparent 60%);pointer-events:none}
+.final-cta .z{position:relative;z-index:1}
+
+/* Footer */
+footer{background:#0a0a20;border-top:1px solid rgba(255,255,255,.05);padding:22px 0;text-align:center}
+footer p{font-size:.72rem;color:var(--g4)}
+footer .cr{margin-top:5px;opacity:.45}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="tb">Cleo is back in the UK <span>&#127468;&#127463;</span> AI money coaching. No bank switch needed.</div>
+
+<!-- NAV -->
+<nav><div class="w ni">
+<div class="nl">cleo<span>.</span></div>
+<div class="nr"><a href="#problem">The Problem</a><a href="#how">How It Works</a><a href="#compare">Compare</a><a href="#faq">FAQ</a></div>
+<div class="nc"><a href="#download" class="btn b-bl">Get Cleo Free</a></div>
+</div></nav>
+
+<!-- SECTION 1: HERO -->
+<section class="hero"><div class="w"><div class="hg">
+<div>
+<div class="ht rv"><span class="dot"></span> Now live in the UK</div>
+<h1 class="rv d1">Your bank app shows your balance. <em>Cleo tells you what to do about it.</em></h1>
+<p class="hp rv d2">AI money coaching that actually helps. Connects to your existing bank. Spots where your money leaks. Tells you what to fix. No bank switch. No faff.</p>
+<div class="hc rv d3">
+<a href="#download" class="btn b-bl">Download Cleo Free</a>
+<a href="#how" class="btn b-gh">See How It Works</a>
+</div>
+<p class="hpr rv d4">Trusted by <strong>4M+ users</strong> globally. 85% feel better about money within a month.</p>
+</div>
+<div class="hv rv d3">
+<div class="hv-label">Cleo AI Chat</div>
+<div class="hv-msg user">I just got paid. Where did last month's money go?</div>
+<div class="hv-msg cleo">Right. So. You spent GBP 347 on eating out. That's 28% of your take home. The month before was GBP 289. You're trending up. Want me to set a spending limit or just roast you?</div>
+<div class="hv-msg user">Roast me.</div>
+<div class="hv-msg cleo">You spent more on Deliveroo than your gas bill. Your sofa must be very comfortable. Want to set a GBP 200 eating out budget? I'll yell at you when you're close.</div>
+</div>
+</div></div></section>
+
+<!-- SECTION 2: SOCIAL PROOF BAR -->
+<section class="spb"><div class="w"><div class="spg">
+<div class="rv"><div class="sn">4M+</div><div class="slb">Users globally</div></div>
+<div class="rv d1"><div class="sn">4.6</div><div class="slb">App Store rating (lifetime)</div></div>
+<div class="rv d2"><div class="sn">85%</div><div class="slb">Feel better about money in 30 days</div></div>
+<div class="rv d3"><div class="sn">GBP 0</div><div class="slb">To start. Free tier. No card needed.</div></div>
+</div></div></section>
+
+<!-- SECTION 3: PROBLEM -->
+<section id="problem"><div class="w">
+<div class="sl rv">The Problem</div>
+<div class="st rv">"I check my bank app, panic, close the app, repeat."</div>
+<div class="ss rv">Sound familiar? You are not alone. Here is what UK young adults actually deal with.</div>
+<div class="pg rv d1">
+<div class="pr"><div class="pn">01</div><div class="pc"><h3>Cost of living keeps climbing. Your salary does not.</h3><p>Rent went up. Energy bills went up. A meal deal costs GBP 4 now. You open your bank app and see a number. That's it. No help. No plan. Just a number that makes you feel bad.</p></div></div>
+<div class="pr"><div class="pn">02</div><div class="pc"><h3>Budgeting apps make you feel like you're doing homework.</h3><p>You tried Plum. You tried Emma. You downloaded a spreadsheet template from Reddit. It worked for 3 days. Then you stopped because manually categorising a GBP 2.80 Tesco meal is not how you want to spend your Sunday.</p></div></div>
+<div class="pr"><div class="pn">03</div><div class="pc"><h3>Your bank shows you what you spent. Not what to do about it.</h3><p>Monzo has categories. Starling has pots. But neither tells you "stop spending on Uber Eats, switch to a GBP 150 budget, and you'll save GBP 200 a month." They show data. They don't coach.</p></div></div>
+<div class="pr"><div class="pn">04</div><div class="pc"><h3>Money anxiety is real and nobody talks about it properly.</h3><p>68% of UK 18 to 30 year olds feel stressed about money at least once a week. Most financial advice sounds like it was written by someone who has never worried about whether they can afford a Pret.</p></div></div>
+</div>
+</div></section>
+
+<!-- SECTION 4: SOLUTION OVERVIEW -->
+<section class="solbg"><div class="w">
+<div class="sl rv">The Solution</div>
+<div class="st rv">AI coaching that knows your spending. And is not afraid to tell you.</div>
+<div class="ss rv">Cleo connects to your bank (Monzo, Starling, Revolut, whatever you use). Analyses your spending. Gives you actual advice. Not pie charts.</div>
+<div class="sg">
+<div class="sc rv"><div class="si">&#128172;</div><h3>Talks to you like a friend (a brutally honest one)</h3><p>Cleo's AI has personality. Ask it anything about your money. It will answer in plain English. With jokes. And occasional roasts about your coffee habit.</p></div>
+<div class="sc rv d1"><div class="si">&#128200;</div><h3>Spots spending patterns you miss</h3><p>"You spent GBP 89 on subscriptions you haven't opened in 3 months." Cleo catches the leaks your bank app hides in tiny grey text.</p></div>
+<div class="sc rv d2"><div class="si">&#127919;</div><h3>Builds a plan you might actually follow</h3><p>Not a 47 row spreadsheet. A simple budget with alerts when you're close to your limit. Cleo texts you before you overspend. Not after.</p></div>
+</div>
+</div></section>
+
+<!-- SECTION 5: HOW IT WORKS -->
+<section class="howbg" id="how"><div class="w">
+<div class="sl rv">How It Works</div>
+<div class="st rv">Three steps. Under 5 minutes. Keep your bank.</div>
+<div class="ss rv">Cleo works on top of your existing account. No switching banks. No new cards. No forms.</div>
+<div class="hl">
+<div class="hi rv"><div class="hn"></div><div class="hx"><h3>Connect your bank</h3><p>Link your Monzo, Starling, Revolut, Barclays, HSBC, or any UK bank. Cleo reads your transactions (read only). Your bank stays exactly where it is.</p><span class="tm">Takes 2 minutes</span></div></div>
+<div class="hi rv d1"><div class="hn"></div><div class="hx"><h3>Cleo analyses your spending</h3><p>The AI goes through your transactions. Finds patterns. Spots subscriptions. Calculates where your money actually goes versus where you think it goes.</p><span class="tm">Instant</span></div></div>
+<div class="hi rv d2"><div class="hn"></div><div class="hx"><h3>Get coached (and roasted)</h3><p>Ask Cleo anything. "Can I afford a weekend trip?" "Where am I wasting money?" "How do I save GBP 500 by summer?" You get a real answer. Not a generic article.</p><span class="tm">Ongoing</span></div></div>
+</div>
+</div></section>
+
+<!-- SECTION 6: FEATURE GRID -->
+<section><div class="w">
+<div class="sl rv">Features</div>
+<div class="st rv">Everything your bank app should do but doesn't.</div>
+<div class="ss rv">Free tier gets you started. Paid tiers unlock advanced coaching and automation.</div>
+<div class="fg">
+<div class="fc-card rv"><div class="fc-icon">&#129302;</div><h3>AI Money Chat</h3><p>Ask Cleo anything about your finances. In plain English. Get real answers. Not links to help articles.</p></div>
+<div class="fc-card rv d1"><div class="fc-icon">&#128184;</div><h3>Spending Insights</h3><p>See where your money goes by category. Spot the leaks. "You spent GBP 127 on coffee this month." Ouch.</p></div>
+<div class="fc-card rv d2"><div class="fc-icon">&#128176;</div><h3>Savings Automation</h3><p>Cleo moves small amounts to savings when you can afford it. You barely notice. Your savings grow anyway.</p></div>
+<div class="fc-card rv d3"><div class="fc-icon">&#128276;</div><h3>Budget Alerts</h3><p>Set a spending limit. Cleo warns you when you're close. Before you tap your card. Not after the damage is done.</p></div>
+<div class="fc-card rv"><div class="fc-icon">&#127775;</div><h3>Roast Mode</h3><p>Turn on roast mode and Cleo will brutally rate your spending decisions. "GBP 47 on candles? Your flat must smell incredible."</p></div>
+<div class="fc-card rv d1"><div class="fc-icon">&#128202;</div><h3>Subscription Tracker</h3><p>See every recurring charge. Find the ones you forgot. Cancel what you don't use. Save without effort.</p></div>
+</div>
+</div></section>
+
+<!-- SECTION 7: COMPARISON TABLE -->
+<section id="compare" style="background:var(--off)"><div class="w">
+<div class="sl rv">Compare</div>
+<div class="st rv">Cleo vs the apps you already have</div>
+<div class="ss rv">Monzo and Starling are great banks. But banks show data. Cleo coaches.</div>
+<div class="cw rv d1"><table>
+<thead><tr><th style="width:22%"></th><th class="cp">Cleo</th><th>Monzo</th><th>Plum</th><th>Emma</th></tr></thead>
+<tbody>
+<tr><td>AI coaching chat</td><td class="cp win">Yes. Full conversation. Personality.</td><td class="lose">No</td><td class="lose">Basic savings tips</td><td class="lose">No</td></tr>
+<tr><td>Spending roasts</td><td class="cp win">Yes. Brutally honest.</td><td class="lose">No</td><td class="lose">No</td><td class="lose">No</td></tr>
+<tr><td>Works with your bank</td><td class="cp win">Any UK bank</td><td>Monzo only</td><td class="win">Any UK bank</td><td class="win">Any UK bank</td></tr>
+<tr><td>Personalised budget</td><td class="cp win">AI built. Adjusts weekly.</td><td>Manual categories</td><td class="lose">Savings focus only</td><td>Manual setup</td></tr>
+<tr><td>Auto savings</td><td class="cp win">AI timed. Round ups.</td><td>Pots (manual)</td><td class="win">AI savings rules</td><td class="lose">Limited</td></tr>
+<tr><td>Price</td><td class="cp win">Free to start</td><td>Free (banking)</td><td>Free to GBP 9.99/mo</td><td>Free to GBP 9.99/mo</td></tr>
+<tr><td>The personality factor</td><td class="cp win">Sassy. Funny. Keeps you coming back.</td><td class="lose">Clean but generic</td><td class="lose">Functional</td><td class="lose">Functional</td></tr>
+</tbody>
+</table></div>
+</div></section>
+
+<!-- SECTION 8: USER RESULTS -->
+<section><div class="w">
+<div class="sl rv">What users say</div>
+<div class="st rv">Real people. Real spending habits. Real results.</div>
+<div class="ss rv">4 million users trust Cleo with their money. Here is why.</div>
+<div class="ur-grid">
+<div class="ur-card rv"><div class="stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><blockquote>"I feel seen by this app. Like it gets that I'm broke but I'm trying."</blockquote><cite><strong>App Store Review</strong>Cleo User</cite><div class="met">Feels understood</div></div>
+<div class="ur-card rv d1"><div class="stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><blockquote>"The sassy AI is what keeps me coming back. Other apps are boring."</blockquote><cite><strong>Trustpilot Review</strong>Cleo User</cite><div class="met">Daily engagement</div></div>
+<div class="ur-card rv d2"><div class="stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><blockquote>"Reviewing purchases through Cleo felt like the exact opposite of the emotional, self hatred inducing process of checking my bank statement."</blockquote><cite><strong>Medium Review</strong>Cleo User</cite><div class="met">Actually enjoys budgeting</div></div>
+<div class="ur-card rv d3"><div class="stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><blockquote>"Cleo actually talks to me like a friend, not a bank. I open the app because I want to, not because I have to."</blockquote><cite><strong>App Store Review</strong>Cleo User</cite><div class="met">Opens app daily</div></div>
+</div>
+</div></section>
+
+<!-- SECTION 9: SECURITY AND FCA -->
+<section class="sec-bg"><div class="w">
+<div class="sl rv" style="color:var(--yellow)">Trust and Security</div>
+<div class="st rv" style="color:var(--wh)">Your money stays in your bank. Cleo just reads the data.</div>
+<div class="ss rv" style="color:var(--g4)">We take security seriously. Here is exactly how your data is protected.</div>
+<div class="sec-grid">
+<div class="sec-card rv"><div class="sec-icon">&#128274;</div><h3>Read only access</h3><p>Cleo can see your transactions. It cannot move, spend, or withdraw your money. Your bank account stays untouched.</p></div>
+<div class="sec-card rv d1"><div class="sec-icon">&#127981;</div><h3>FCA registered</h3><p>Cleo is registered with the Financial Conduct Authority. Same regulatory standards as your high street bank.</p></div>
+<div class="sec-card rv d2"><div class="sec-icon">&#128737;</div><h3>Bank level encryption</h3><p>256 bit encryption on all data. Same standard used by Monzo, Starling, and every major UK bank.</p></div>
+<div class="sec-card rv d3"><div class="sec-icon">&#128100;</div><h3>Your data is yours</h3><p>Cleo does not sell your data. Full stop. You can delete your account and all data at any time. Instantly.</p></div>
+</div>
+</div></section>
+
+<!-- SECTION 10: VIDEO TESTIMONIALS -->
+<section class="vtbg"><div class="w">
+<div class="sl rv">Video stories</div>
+<div class="st rv">Hear from people who use Cleo every day</div>
+<div class="ss rv">Click to watch how real users manage their money with Cleo.</div>
+<div class="vt-grid">
+<div class="vt-card rv">
+<div class="vt-vid"><div class="pb"></div></div>
+<div class="vt-body"><blockquote>"I saved GBP 400 in my first month. Cleo found 3 subscriptions I forgot about."</blockquote><cite><strong>UK Beta User</strong>London, 24 years old</cite></div>
+</div>
+<div class="vt-card rv d1">
+<div class="vt-vid"><div class="pb"></div></div>
+<div class="vt-body"><blockquote>"The roasts are hilarious but they actually changed how I spend. I stopped ordering takeaway 4 times a week."</blockquote><cite><strong>UK Beta User</strong>Manchester, 27 years old</cite></div>
+</div>
+<div class="vt-card rv d2">
+<div class="vt-vid"><div class="pb"></div></div>
+<div class="vt-body"><blockquote>"I already had Monzo. I added Cleo on top. Now I actually know where my money goes."</blockquote><cite><strong>UK Beta User</strong>Birmingham, 22 years old</cite></div>
+</div>
+</div>
+</div></section>
+
+<!-- SECTION 11: APP DOWNLOAD CTAs -->
+<section id="download" style="text-align:center"><div class="w">
+<div class="sl rv">Download</div>
+<div class="st rv">Get Cleo on your phone. Takes 2 minutes to set up.</div>
+<div class="ss rv" style="margin-left:auto;margin-right:auto">Free to start. No card needed. Works with any UK bank.</div>
+<div class="dl-grid rv d1">
+<a href="https://apps.apple.com/gb/app/cleo-budget-cash-advance/id1214803498" class="dl-btn" target="_blank">
+<span class="dl-icon">&#63743;</span>
+<span class="dl-text"><small>Download on the</small><span>App Store</span></span>
+</a>
+<a href="https://play.google.com/store/apps/details?id=com.meetcleo" class="dl-btn" target="_blank">
+<span class="dl-icon">&#9654;</span>
+<span class="dl-text"><small>Get it on</small><span>Google Play</span></span>
+</a>
+</div>
+<p class="rv d2" style="margin-top:16px;font-size:.82rem;color:var(--g4)">4.6 stars on the App Store. 4M+ users. Free tier available.</p>
+</div></section>
+
+<!-- SECTION 12: FAQ -->
+<section id="faq" style="background:var(--off)"><div class="w">
+<div class="sl rv">Questions</div>
+<div class="st rv">Everything you want to know before downloading</div>
+<div class="fl rv d1">
+<div class="fq"><div class="fq-q">Is this the same Cleo as the one in the US?<span class="ic">+</span></div><div class="fq-a">Yes. Same company. Same AI. Cleo was actually born in London in 2016. They went to the US to grow, hit over 4 million users, and now they're back home. The UK version focuses on AI coaching and budgeting. No cash advances in the UK (different regulations).</div></div>
+<div class="fq"><div class="fq-q">Why did Cleo leave the UK in the first place?<span class="ic">+</span></div><div class="fq-a">Cleo focused on the US market where cash advances were the core product. The US market was bigger and faster growing for that product. Now Cleo is back with a different focus: AI money coaching. The CEO said "coming back feels like a homecoming."</div></div>
+<div class="fq"><div class="fq-q">Is my data safe?<span class="ic">+</span></div><div class="fq-a">Yes. Cleo uses bank level encryption (256 bit). It is FCA registered. It has read only access to your bank account. It cannot move or spend your money. Your data is never sold. You can delete everything at any time.</div></div>
+<div class="fq"><div class="fq-q">Do I need to switch banks?<span class="ic">+</span></div><div class="fq-a">No. Cleo connects to your existing bank account. Monzo, Starling, Revolut, Barclays, HSBC, Lloyds, NatWest. Whatever you use. Keep your bank. Add Cleo on top. It is a coaching layer, not a replacement.</div></div>
+<div class="fq"><div class="fq-q">How much does it cost?<span class="ic">+</span></div><div class="fq-a">The free tier gives you AI chat, spending insights, and basic budgeting. Paid tiers unlock advanced features like savings automation, personalised coaching plans, and spending challenges. Paid plans start at GBP 5.99 per month. No commitment. Cancel anytime. No tricks.</div></div>
+<div class="fq"><div class="fq-q">What about the FTC thing I saw in the news?<span class="ic">+</span></div><div class="fq-a">The FTC settlement in March 2025 was about cash advance advertising in the US. The UK version of Cleo does not offer cash advances. UK Cleo focuses on AI coaching, budgeting, and savings. Different product. Different regulations. FCA registered.</div></div>
+<div class="fq"><div class="fq-q">I already have Monzo. Why do I need Cleo too?<span class="ic">+</span></div><div class="fq-a">Monzo shows you categories and transactions. Cleo tells you what to do about them. "You spent 28% of your income on eating out. Here is how to cut it to 15% without hating your life." That is the difference between a bank and a coach.</div></div>
+</div>
+</div></section>
+
+<!-- SECTION 13: GOLDEN HIPPO OFFER -->
+<section class="ghbg"><div class="w">
+<div class="gh-inner">
+<h2 class="rv">Try Cleo free for 30 days. See what your money is actually doing.</h2>
+<p class="rv d1">Full AI coaching. Full spending analysis. Full roast mode. No credit card. No commitment. If you don't feel better about your money in 30 days, delete the app. We will not chase you with emails.</p>
+<div class="gh-features rv d2">
+<div class="gh-feat"><span class="gh-check">&#10003;</span>AI money chat (ask anything about your finances)</div>
+<div class="gh-feat"><span class="gh-check">&#10003;</span>Full spending breakdown by category</div>
+<div class="gh-feat"><span class="gh-check">&#10003;</span>Subscription tracker (find what you forgot)</div>
+<div class="gh-feat"><span class="gh-check">&#10003;</span>Budget alerts before you overspend</div>
+<div class="gh-feat"><span class="gh-check">&#10003;</span>Roast mode (brutally honest spending reviews)</div>
+<div class="gh-feat"><span class="gh-check">&#10003;</span>Savings automation (small amounts, big results)</div>
+</div>
+<a href="#download" class="btn b-yl rv d3" style="font-size:.95rem;padding:17px 34px">Download Cleo Free</a>
+<p class="rv d4" style="margin-top:14px;font-size:.78rem;color:rgba(255,255,255,.5)">Available on iOS and Android. Works with any UK bank.</p>
+</div>
+</div></section>
+
+<!-- SECTION 14: FINAL CTA -->
+<section class="final-cta"><div class="w z">
+<div class="sl rv" style="color:var(--yellow)">Your money. Your coach.</div>
+<div class="st rv" style="color:var(--wh);max-width:560px;margin-left:auto;margin-right:auto">Stop staring at your bank balance and hoping for the best.</div>
+<div class="ss rv d1" style="color:var(--g4);margin-left:auto;margin-right:auto">Cleo tells you where your money goes, what to fix, and roasts you when you ignore the advice. 4 million people already use it. Your turn.</div>
+<div class="rv d2" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+<a href="#download" class="btn b-yl" style="font-size:.95rem;padding:17px 34px">Download Cleo Free</a>
+</div>
+<p class="rv d3" style="color:var(--g4);font-size:.8rem;margin-top:14px">No bank switch. No credit card. No commitment. Just better money habits.</p>
+</div></section>
+
+<!-- SECTION 15: FOOTER -->
+<footer>
+<p>Cleo AI. Born in London. Loved by 4M+ users.</p>
+<p class="cr">Landing page concept by MDB Growth Capital</p>
+</footer>
+
+<script>
+const o=new IntersectionObserver(e=>{e.forEach(i=>{if(i.isIntersecting){i.target.classList.add('on');o.unobserve(i.target)}})},{threshold:.08,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el=>o.observe(el));
+document.querySelectorAll('.fq-q').forEach(q=>{q.addEventListener('click',()=>{const f=q.parentElement,w=f.classList.contains('open');document.querySelectorAll('.fq').forEach(x=>x.classList.remove('open'));if(!w)f.classList.add('open')})});
+</script>
+</body>
+</html>

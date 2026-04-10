@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chris's Special Package — MDB Growth Capital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--navy:#0f1729;--navy-light:#1a2744;--white:#ffffff;--off-white:#f7f8fa;
+--accent:#3b82f6;--accent-dark:#2563eb;--green:#22c55e;--yellow:#eab308;--red:#ef4444;
+--text:#1e293b;--text-light:#64748b;--text-lighter:#94a3b8;
+--font-display:'DM Serif Display',Georgia,serif;
+--font-body:'DM Sans',system-ui,sans-serif;
+--max-w:780px;--section-py:80px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);color:var(--text);line-height:1.7;background:var(--white);overflow-x:hidden}
+
+/* ── SIDE NAV ── */
+.side-nav{position:fixed;left:20px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:12px}
+.side-nav a{width:10px;height:10px;border-radius:50%;background:var(--text-lighter);display:block;transition:all .3s;position:relative}
+.side-nav a.active{background:var(--accent);transform:scale(1.4)}
+.side-nav a::after{content:attr(data-label);position:absolute;left:22px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text-light);white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;font-weight:500;letter-spacing:.02em}
+.side-nav a:hover::after{opacity:1}
+@media(max-width:900px){.side-nav{display:none}}
+
+/* ── SECTIONS ── */
+section{padding:var(--section-py) 24px;position:relative}
+section .inner{max-width:var(--max-w);margin:0 auto}
+.dark{background:var(--navy);color:var(--white)}
+.dark h1,.dark h2,.dark h3,.dark p,.dark li,.dark td,.dark th{color:var(--white)}
+.alt{background:var(--off-white)}
+
+/* ── TYPOGRAPHY ── */
+h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin-bottom:20px;font-weight:400}
+h2{font-family:var(--font-display);font-size:clamp(1.5rem,3.5vw,2.2rem);line-height:1.2;margin-bottom:16px;font-weight:400}
+h3{font-size:1.1rem;font-weight:700;margin-bottom:10px;letter-spacing:.01em}
+p{margin-bottom:16px;font-size:1rem}
+.subtitle{font-size:1.05rem;color:var(--text-light);margin-bottom:24px;line-height:1.6}
+.dark .subtitle{color:rgba(255,255,255,.7)}
+.label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:block}
+.dark .label{color:rgba(255,255,255,.5)}
+
+/* ── ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:60px;padding-bottom:60px}
+.hero h1{font-size:clamp(2.4rem,6vw,4rem);margin-bottom:12px}
+.hero .tag{display:inline-block;background:rgba(59,130,246,.15);color:var(--accent);padding:6px 16px;border-radius:100px;font-size:.8rem;font-weight:700;letter-spacing:.04em;margin-bottom:28px}
+.dark .hero .tag{background:rgba(59,130,246,.25)}
+.video-placeholder{width:100%;aspect-ratio:16/9;background:var(--navy-light);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:32px 0;border:1px solid rgba(255,255,255,.1);cursor:pointer;position:relative;overflow:hidden}
+.video-placeholder::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(59,130,246,.1),transparent)}
+.video-placeholder .play{width:64px;height:64px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.video-placeholder .play::after{content:'';border:solid var(--white);border-width:0 0 12px 20px;transform:rotate(90deg);margin-left:3px}
+.callout{background:rgba(59,130,246,.08);border-left:3px solid var(--accent);padding:20px 24px;border-radius:0 8px 8px 0;margin:24px 0}
+.dark .callout{background:rgba(59,130,246,.15)}
+.callout p{margin-bottom:8px;font-size:.95rem}
+.callout p:last-child{margin-bottom:0}
+.wild-goal{font-size:1.3rem;font-weight:700;color:var(--accent)}
+.dark .wild-goal{color:#60a5fa}
+.scroll-arrow{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+.scroll-arrow svg{width:24px;height:24px;stroke:rgba(255,255,255,.4);fill:none;stroke-width:2}
+
+/* ── CARDS GRID ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:28px 0}
+.card{background:var(--white);border:1px solid #e2e8f0;border-radius:12px;padding:24px;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.card .num{width:32px;height:32px;background:var(--accent);color:var(--white);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;margin-bottom:12px}
+.card h3{font-size:1rem;margin-bottom:8px}
+.card p{font-size:.9rem;color:var(--text-light);margin-bottom:0}
+
+/* ── METRIC CARDS ── */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin:28px 0}
+.metric{text-align:center;padding:28px 20px;border-radius:12px;background:var(--off-white);border:1px solid #e2e8f0}
+.metric .number{font-family:var(--font-display);font-size:2.8rem;color:var(--accent);line-height:1}
+.metric .desc{font-size:.85rem;color:var(--text-light);margin-top:8px}
+
+/* ── STEPS ── */
+.steps{counter-reset:step;margin:28px 0}
+.step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid #e2e8f0;align-items:flex-start}
+.step:last-child{border-bottom:none}
+.step::before{counter-increment:step;content:counter(step);width:36px;height:36px;min-width:36px;background:var(--accent);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;margin-top:2px}
+.step-content h3{font-size:.95rem;margin-bottom:4px}
+.step-content p{font-size:.9rem;color:var(--text-light);margin-bottom:0}
+
+/* ── CTA ── */
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0}
+@media(max-width:600px){.cta-grid{grid-template-columns:1fr}}
+.cta-card{padding:32px 24px;border-radius:12px;text-align:center;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05)}
+.cta-card h3{font-size:1.1rem;margin-bottom:8px}
+.cta-card p{font-size:.9rem;opacity:.8;margin-bottom:16px}
+.cta-card .btn{display:inline-block;padding:12px 28px;border-radius:8px;background:var(--accent);color:var(--white);text-decoration:none;font-weight:700;font-size:.9rem;transition:background .2s}
+.cta-card .btn:hover{background:var(--accent-dark)}
+.cta-card .btn.outline{background:transparent;border:2px solid rgba(255,255,255,.3)}
+.cta-card .btn.outline:hover{border-color:var(--white);background:rgba(255,255,255,.05)}
+
+/* ── TRAFFIC LIGHTS ── */
+.traffic-light{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.traffic-light.red{background:rgba(239,68,68,.12);color:var(--red)}
+.traffic-light.yellow{background:rgba(234,179,8,.12);color:#ca8a04}
+.traffic-light.green{background:rgba(34,197,94,.12);color:var(--green)}
+.traffic-light .dot{width:10px;height:10px;border-radius:50%}
+.traffic-light.red .dot{background:var(--red)}
+.traffic-light.yellow .dot{background:var(--yellow)}
+.traffic-light.green .dot{background:var(--green)}
+
+/* ── TABLES ── */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.88rem}
+th{text-align:left;padding:12px 14px;background:var(--navy);color:var(--white);font-weight:600;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+th:first-child{border-radius:8px 0 0 0}
+th:last-child{border-radius:0 8px 0 0}
+td{padding:12px 14px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+tr:nth-child(even){background:var(--off-white)}
+.impact{color:var(--green);font-weight:700}
+.total-row{background:rgba(59,130,246,.06)!important;font-weight:700}
+.dark table th{background:rgba(255,255,255,.1)}
+.dark table td{border-color:rgba(255,255,255,.1)}
+.dark table tr:nth-child(even){background:rgba(255,255,255,.03)}
+
+/* ── BIGGEST LEAK ── */
+.biggest-leak{background:var(--navy);color:var(--white);padding:28px;border-radius:12px;margin:28px 0;border-left:4px solid var(--red)}
+.biggest-leak h3{color:var(--red);font-size:1rem;margin-bottom:8px}
+.biggest-leak p{color:rgba(255,255,255,.85);margin-bottom:0}
+
+/* ── PILLARS / FUNNEL CASCADE ── */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:28px 0}
+.pillar{padding:24px;border-radius:12px;background:var(--off-white);border:1px solid #e2e8f0}
+.pillar .pillar-num{font-family:var(--font-display);font-size:2rem;color:var(--accent);line-height:1;margin-bottom:8px}
+.pillar h3{font-size:.95rem;margin-bottom:6px}
+.pillar p{font-size:.85rem;color:var(--text-light);margin-bottom:0}
+.tagline{font-style:italic;color:var(--text-light);margin-top:24px;font-size:1.05rem;text-align:center}
+
+/* ── COMPARISON TABLE ── */
+.comp-table{overflow-x:auto;margin:20px 0;border-radius:12px;border:1px solid #e2e8f0}
+.comp-table table{margin:0}
+.comp-table th,.comp-table td{white-space:nowrap;text-align:center;padding:10px 12px}
+.comp-table td:first-child,.comp-table th:first-child{text-align:left;font-weight:600}
+.check{color:var(--green)}
+.cross{color:var(--red);opacity:.5}
+
+/* ── WEEK CARDS ── */
+.week-cards{display:flex;flex-direction:column;gap:16px;margin:24px 0}
+.week-card{padding:20px 24px;border-radius:10px;background:var(--white);border:1px solid #e2e8f0;border-left:4px solid var(--accent)}
+.week-card .week-num{font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.week-card h3{font-size:.95rem;margin-bottom:6px}
+.week-card p{font-size:.9rem;color:var(--text-light);margin-bottom:0}
+.quick-wins{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:20px 24px;margin-top:24px}
+.quick-wins h3{color:var(--green);margin-bottom:12px}
+.quick-wins li{font-size:.9rem;margin-bottom:8px;padding-left:24px;position:relative;list-style:none}
+.quick-wins li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700}
+
+/* ── TIERS ── */
+.tiers{display:flex;flex-direction:column;gap:16px;margin:24px 0}
+.tier{padding:24px;border-radius:12px;background:var(--off-white);border:1px solid #e2e8f0}
+.tier h3{font-size:1rem;margin-bottom:4px}
+.tier .conversion{font-size:.85rem;color:var(--accent);font-weight:700;margin-bottom:8px}
+
+/* ── TIMELINE ── */
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:28px 0}
+.timeline-card{border-radius:12px;overflow:hidden;background:var(--white);border:1px solid #e2e8f0}
+.timeline-card .timeline-header{padding:12px 20px;font-weight:700;font-size:.9rem;color:var(--white);background:var(--accent)}
+.timeline-card ul{padding:16px 20px 20px 36px;font-size:.88rem;color:var(--text-light)}
+.timeline-card li{margin-bottom:6px}
+
+/* ── CASE STUDY ── */
+.case-phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0}
+.case-phase{padding:24px;border-radius:12px}
+.case-phase.context{background:#f1f5f9}
+.case-phase.action{background:var(--white);border:1px solid #e2e8f0}
+.case-phase.result{background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15)}
+.case-phase h3{font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-light);margin-bottom:12px}
+
+/* ── METHODOLOGY FLOW ── */
+.method-flow{display:flex;gap:8px;margin:28px 0;overflow-x:auto;padding-bottom:8px}
+@media(max-width:700px){.method-flow{flex-direction:column}}
+.method-step{flex:1;min-width:140px;padding:20px;border-radius:10px;background:var(--off-white);border:1px solid #e2e8f0;text-align:center;position:relative}
+.method-step .method-num{width:28px;height:28px;background:var(--accent);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;margin:0 auto 10px}
+.method-step h3{font-size:.85rem;margin-bottom:4px}
+.method-step p{font-size:.78rem;color:var(--text-light);margin-bottom:0}
+.method-arrow{display:flex;align-items:center;color:var(--text-lighter);font-size:1.2rem}
+@media(max-width:700px){.method-arrow{justify-content:center;transform:rotate(90deg)}}
+
+/* ── FAQ ACCORDION ── */
+.faq-list{margin:24px 0}
+.faq-item{border-bottom:1px solid #e2e8f0}
+.faq-q{padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.95rem;user-select:none}
+.faq-q::after{content:'+';font-size:1.4rem;color:var(--accent);transition:transform .3s;font-weight:300}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease;font-size:.9rem;color:var(--text-light);line-height:1.7}
+.faq-item.open .faq-a{max-height:400px;padding-bottom:18px}
+
+/* ── ABOUT ── */
+.about-card{display:flex;gap:24px;align-items:flex-start;margin:24px 0}
+@media(max-width:600px){.about-card{flex-direction:column;align-items:center;text-align:center}}
+.avatar{width:80px;height:80px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:2rem;color:var(--white);min-width:80px}
+.about-info h3{font-size:1.1rem;margin-bottom:2px}
+.about-info .title-role{color:var(--text-light);font-size:.9rem;margin-bottom:12px}
+.about-info p{font-size:.9rem}
+.linkedin-btn{display:inline-block;padding:8px 20px;border-radius:6px;background:var(--accent);color:var(--white);text-decoration:none;font-size:.85rem;font-weight:600;margin-top:8px;transition:background .2s}
+.linkedin-btn:hover{background:var(--accent-dark)}
+
+/* ── FOOTER ── */
+.closing{font-size:1.1rem;line-height:1.7;margin:20px 0}
+.signature{margin-top:24px;font-style:italic;opacity:.7;font-size:.9rem}
+.footer-bar{text-align:center;padding:20px;font-size:.78rem;color:var(--text-lighter);border-top:1px solid rgba(255,255,255,.1)}
+.dark .footer-bar{border-top-color:rgba(255,255,255,.1)}
+</style>
+</head>
+<body>
+
+<!-- SIDE NAV -->
+<nav class="side-nav" id="sideNav">
+<a href="#hero" data-label="Package" class="active"></a>
+<a href="#inside" data-label="Inside"></a>
+<a href="#why" data-label="Why Now"></a>
+<a href="#cred" data-label="Credibility"></a>
+<a href="#gift" data-label="Gift"></a>
+<a href="#cta1" data-label="Get Started"></a>
+<a href="#leak1" data-label="Attraction"></a>
+<a href="#leak2" data-label="Alignment"></a>
+<a href="#leak3" data-label="Activation"></a>
+<a href="#levers" data-label="Money Levers"></a>
+<a href="#funnel" data-label="Funnel"></a>
+<a href="#competition" data-label="Competition"></a>
+<a href="#gap" data-label="Post FTC"></a>
+<a href="#sprints" data-label="Sprints"></a>
+<a href="#weeks1" data-label="Weeks 1-6"></a>
+<a href="#weeks2" data-label="Weeks 7-12"></a>
+<a href="#sample" data-label="UK Re-Entry"></a>
+<a href="#results" data-label="Results"></a>
+<a href="#casestudy" data-label="Case Study"></a>
+<a href="#method" data-label="Growth Loop"></a>
+<a href="#faq" data-label="FAQ"></a>
+<a href="#about" data-label="About"></a>
+<a href="#offer" data-label="Offer"></a>
+<a href="#cta2" data-label="Get Started"></a>
+</nav>
+
+<!-- SECTION 1: HERO (Card 1) -->
+<section class="dark hero" id="hero">
+<div class="inner">
+<span class="tag reveal">MDB GROWTH CAPITAL</span>
+<h1 class="reveal reveal-delay-1">Chris's Special Package</h1>
+<p class="subtitle reveal reveal-delay-2">A Diversification Acquisition Audit for Cleo — and a 90-Day Plan to Launch New Products Without Repeating the EWA Playbook</p>
+<div class="video-placeholder reveal reveal-delay-3" id="videoEmbed">
+<div class="play"></div>
+</div>
+<div class="callout reveal">
+<p><strong>Do Not Skip The Video Above</strong></p>
+<p><strong>How This Document Can Help You</strong></p>
+<p>This doc was crafted solely for you, Chris. Every page is built around Cleo's diversification challenge right now. It maps exactly where your acquisition system leaks users when it tries to sell anything other than cash advances. And it shows what a 90 day fix looks like.</p>
+<p class="wild-goal">Our wild goal? $50M to $80M in diversification revenue within 18 months. From products that don't exist in your acquisition engine yet.</p>
+</div>
+</div>
+<div class="scroll-arrow"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+</section>
+
+<!-- SECTION 2: WHAT'S INSIDE (Card 2) -->
+<section id="inside">
+<div class="inner">
+<span class="label reveal">What You Get</span>
+<h2 class="reveal">What's Inside Your Package?</h2>
+<div class="cards-grid">
+<div class="card reveal"><div class="num">1</div><h3>The Diversification Acquisition Diagnostic</h3><p>A full AAA audit of Cleo's acquisition system for non-EWA products. Attraction. Alignment. Activation. Every layer scored Red, Yellow, or Green with specific evidence from your JD, app reviews, and competitive landscape.</p></div>
+<div class="card reveal reveal-delay-1"><div class="num">2</div><h3>The Leak Map</h3><p>Where users drop off when the product isn't "I need cash now." Why credit builder, chat, and UK users need different channels, different messaging, and different activation triggers. The single biggest leak identified and quantified.</p></div>
+<div class="card reveal reveal-delay-2"><div class="num">3</div><h3>The Money Levers</h3><p>11 highest impact fixes ranked by estimated revenue. From product specific traffic sources to post FTC transparent messaging to UK re-entry positioning.</p></div>
+<div class="card reveal reveal-delay-3"><div class="num">4</div><h3>The 90 Day Diversification Roadmap</h3><p>Month by month sprint plan. What to test in the first 4 weeks. What to scale in month 2. What to document as a repeatable playbook by day 90.</p></div>
+<div class="card reveal"><div class="num">5</div><h3>UK Re-Entry Positioning Framework</h3><p>Three tested positioning angles for Cleo in the UK market. Each targeting a different user segment and channel mix. Built around how Monzo, Starling, Revolut, and Plum actually acquire and retain users.</p></div>
+<div class="card reveal reveal-delay-1"><div class="num">6</div><h3>How Cleo Gets More Users and Converts Them</h3><p>What a full diversification acquisition installation looks like for Cleo. Specific to your products, your regulatory constraints, your gaps.</p></div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 3: WHY CLEO (Card 3) -->
+<section class="alt" id="why">
+<div class="inner">
+<span class="label reveal">The Research</span>
+<h2 class="reveal">Why Cleo? Why Now?</h2>
+<p class="reveal">Three things made me stop on Cleo.</p>
+<div class="callout reveal">
+<p><strong>First: the JD.</strong><br>Your Growth Marketing Lead (Diversification) posting says the role will "shape growth strategy for new Cleo products" and "conduct audits of current acquisition efforts to identify gaps." That is not a growth optimisation job. That is a build from scratch job. The diversification acquisition system does not exist yet.</p>
+</div>
+<div class="callout reveal">
+<p><strong>Second: the triple forcing function.</strong><br>$17M FTC settlement in March 2025 constraining your core product's messaging. UK relaunch in February 2026 still in staged rollout after 7 weeks. $280M+ ARR with 2x YoY growth and investors expecting diversified revenue before IPO. These three forces are converging right now.</p>
+</div>
+<div class="callout reveal">
+<p><strong>Third: the gap.</strong><br>Cleo built a world class acquisition engine for one product: cash advances via Meta and TikTok. That engine took you from $30M to $300M ARR. But when I looked at what happens when you try to acquire users for Credit Builder, Chat, or the UK market, the picture changes. Different products. Different user mindsets. Different awareness levels. Same engine. That is the gap.</p>
+</div>
+<p class="reveal" style="margin-top:20px">You are hiring someone to build this. MDB Growth Capital can install the framework they execute on day one.</p>
+</div>
+</section>
+
+<!-- SECTION 4: CREDIBILITY (Card 4) -->
+<section id="cred">
+<div class="inner">
+<span class="label reveal">Why Listen To Us</span>
+<h2 class="reveal">The package itself is the proof.</h2>
+<p class="subtitle reveal">Everything in this document is based on direct research into Cleo's products, pricing, FTC settlement, JD intelligence, App Store reviews, and competitive landscape. Not a template. Not a pitch deck. A built thing.</p>
+<div class="metrics reveal">
+<div class="metric"><div class="number">15%</div><div class="desc">SMB revenue growth at BT/EE through systematic multi channel optimisation</div></div>
+<div class="metric"><div class="number">£260K</div><div class="desc">Annual CAC savings at Santander across paid media channels</div></div>
+<div class="metric"><div class="number">20%</div><div class="desc">Conversion improvement on Santander current account repositioning</div></div>
+</div>
+<div class="callout reveal">
+<p><strong>Why this matters for Cleo:</strong> You are a $280M+ ARR company trying to launch new products at scale while navigating post regulatory constraints. That requires someone who has operated at BT and Santander scale and understands both the growth ambition and the compliance reality.</p>
+</div>
+<p class="reveal"><strong>The methodology:</strong> The AAA diagnostic framework (Attraction, Alignment, Activation) with 11 Money Levers has been applied to Cleo's situation. Every finding traces back to observable data.</p>
+</div>
+</section>
+
+<!-- SECTION 5: GIFT (Card 5) -->
+<section class="alt" id="gift">
+<div class="inner">
+<span class="label reveal">Our Gift</span>
+<h2 class="reveal">The Diversification Acquisition Framework</h2>
+<p class="reveal">Here is what you get, for free, in this document:</p>
+<ul class="reveal" style="margin:16px 0 28px 20px;font-size:.95rem">
+<li>The full AAA diagnostic of your acquisition system for diversification products. Scored. Evidenced. Actionable.</li>
+<li>11 Money Levers ranked by estimated annual impact. Each with a specific fix.</li>
+<li>A 90 day roadmap your Growth Marketing Lead can execute from day one.</li>
+<li>UK re-entry positioning angles tested against Monzo, Starling, Revolut, and Plum.</li>
+<li>How Cleo Gets More Users and Converts Them showing the full funnel mapped stage by stage.</li>
+</ul>
+<h3 class="reveal">How it works if you want to go further:</h3>
+<div class="steps reveal">
+<div class="step"><div class="step-content"><h3>Read this document</h3><p>Take what is useful. No strings attached.</p></div></div>
+<div class="step"><div class="step-content"><h3>Reply or book a call</h3><p>15 minutes. No pitch. Just a conversation.</p></div></div>
+<div class="step"><div class="step-content"><h3>Live diagnostic of your data</h3><p>We look at the numbers behind the leak map.</p></div></div>
+<div class="step"><div class="step-content"><h3>MDB builds the frameworks</h3><p>Product specific acquisition frameworks for Credit Builder, Chat, and UK.</p></div></div>
+<div class="step"><div class="step-content"><h3>Your Growth Marketing Lead executes</h3><p>We provide the system, they run it.</p></div></div>
+<div class="step"><div class="step-content"><h3>30 day review</h3><p>Adjust. Scale what works. Kill what doesn't.</p></div></div>
+<div class="step"><div class="step-content"><h3>Repeatable playbook</h3><p>Cleo has a repeatable 0 to 1 playbook for every future product launch.</p></div></div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 6: CTA (Card 6) -->
+<section class="dark" id="cta1">
+<div class="inner" style="text-align:center">
+<h2 class="reveal">2 Options To Get Started</h2>
+<div class="cta-grid reveal">
+<div class="cta-card"><h3>Just Reply</h3><p>Reply to the email this came with. Tell me what stood out. I will respond within 24 hours with next steps.</p><a class="btn outline" href="mailto:">Reply to Email</a></div>
+<div class="cta-card"><h3>Book A Call</h3><p>15 minute slot. No pitch. Just a conversation about Cleo's diversification challenge.</p><a class="btn" href="https://cal.com/jean-m-8f4kbr/15min" target="_blank">Book 15 Minutes</a></div>
+</div>
+<p class="reveal" style="margin-top:20px;opacity:.6;font-size:.9rem">No commitment either way. Read the document first. Then decide.</p>
+</div>
+</section>
+
+<!-- SECTION 7: LEAK MAP - ATTRACTION (Card 7) -->
+<section id="leak1">
+<div class="inner">
+<span class="label reveal">AAA Diagnostic</span>
+<h2 class="reveal">The Leak Map: Attraction Layer</h2>
+<div class="reveal"><span class="traffic-light red"><span class="dot"></span>RED</span></div>
+<p class="reveal" style="margin-top:16px">Your traffic sources are optimised for one user mindset: "I need cash now." That mindset drives EWA acquisition beautifully on Meta and TikTok. But diversification products attract fundamentally different users at different awareness levels.</p>
+<table class="reveal">
+<thead><tr><th>Product</th><th>User Mindset</th><th>Awareness Level</th><th>Right Channel</th><th>Current Channel</th></tr></thead>
+<tbody>
+<tr><td><strong>Credit Builder</strong></td><td>"I want to improve my credit score"</td><td>Solution Aware (searching)</td><td>Google Search, YouTube, comparison sites</td><td>Meta/TikTok (EWA creative)</td></tr>
+<tr><td><strong>AI Chat</strong></td><td>"Budgeting is hard, can something help?"</td><td>Problem Aware (discovery)</td><td>TikTok discovery content, Instagram Reels, content marketing</td><td>Meta/TikTok (EWA creative)</td></tr>
+<tr><td><strong>UK Relaunch</strong></td><td>"Cost of living is painful, Monzo isn't enough"</td><td>Problem Aware (doesn't know Cleo is back)</td><td>UK Instagram, Reddit r/UKPersonalFinance, YouTube UK creators</td><td>Staged rollout, waitlist page</td></tr>
+<tr><td><strong>Future Products</strong></td><td>Unknown</td><td>Unknown</td><td>To be determined per product</td><td>Nothing yet</td></tr>
+</tbody>
+</table>
+<div class="callout reveal">
+<p><strong>The diagnosis:</strong> Running EWA creative for diversification products is like using a Formula 1 car to deliver groceries. Fast, expensive, wrong vehicle. Each product needs its own channel mix matched to its user's awareness level.</p>
+</div>
+<div class="callout reveal">
+<p><strong>Evidence:</strong> Your JD lists "Meta, TikTok, Google, Affiliates, Partnerships and emerging platforms." The breadth of that list signals none are proven for diversification. The word "emerging" signals awareness that the current mix is insufficient.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 8: LEAK MAP - ALIGNMENT (Card 8) -->
+<section class="alt" id="leak2">
+<div class="inner">
+<h2 class="reveal">The Leak Map: Alignment Layer</h2>
+<div class="reveal"><span class="traffic-light yellow"><span class="dot"></span>YELLOW</span></div>
+<table class="reveal" style="margin-top:16px">
+<thead><tr><th>Touchpoint</th><th>Current State</th><th>Problem</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td><strong>App Store Listing</strong></td><td>Single listing for all products. 4.6 star lifetime, 2.9 star recent reviews.</td><td>A user searching for "credit builder app" sees cash advance complaints and FTC settlement mentions first.</td><td>Apple custom product pages: Credit Builder screenshots for credit campaigns, UK features for UK campaigns.</td></tr>
+<tr><td><strong>meetcleo.com/uk</strong></td><td>Waitlist page with no conversion funnel</td><td>No product demonstration, no UK social proof, no conversion path</td><td>Full UK landing page: hero with UK pain, UK testimonials, Monzo/Starling comparison positioning.</td></tr>
+<tr><td><strong>Pricing Disclosure</strong></td><td>Subscription required before core value is visible</td><td>FTC consent decree now requires "clear and conspicuous disclosure of terms"</td><td>Turn compliance into competitive advantage: "Cleo shows you exactly what you qualify for before you commit."</td></tr>
+</tbody>
+</table>
+<div class="callout reveal">
+<p><strong>The diagnosis:</strong> Everything funnels through one App Store listing. When a single conversion point serves all products, the messaging cannot be tailored to each product's value proposition. A UK user interested in AI coaching sees US cash advance complaints. A credit builder user sees advance amount frustrations.</p>
+</div>
+<div class="callout reveal">
+<p><strong>Post FTC opportunity:</strong> The consent decree requires transparent pricing and easy cancellation. Most fintechs treat this as a constraint. For Gen Z, transparency IS the conversion lever. Lean into it.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 9: LEAK MAP - ACTIVATION + BIGGEST LEAK (Card 9) -->
+<section id="leak3">
+<div class="inner">
+<h2 class="reveal">The Leak Map: Activation Layer</h2>
+<div class="reveal"><span class="traffic-light yellow"><span class="dot"></span>YELLOW</span></div>
+<table class="reveal" style="margin-top:16px">
+<thead><tr><th>Step</th><th>EWA Flow (Working)</th><th>Diversification Flow (Broken)</th></tr></thead>
+<tbody>
+<tr><td><strong>Download App</strong></td><td>High volume (6M+ lifetime)</td><td>Same download, different intent</td></tr>
+<tr><td><strong>Create Account</strong></td><td>~70 to 80% conversion</td><td>Same</td></tr>
+<tr><td><strong>Connect Bank</strong></td><td>~50 to 60% (G2 reviews cite bank verification friction)</td><td>FRICTION: "Cannot verify a bank or credit union easily"</td></tr>
+<tr><td><strong>Subscribe</strong></td><td>$5.99 or $14.99/month. Hook: "Get your cash advance"</td><td>NO HOOK for Credit Builder or Chat. Why subscribe before seeing value?</td></tr>
+<tr><td><strong>Use Product</strong></td><td>Cash advance delivered immediately. Value = instant.</td><td>Credit score takes weeks to improve. AI coaching value builds over time. Time to value is 10x longer.</td></tr>
+</tbody>
+</table>
+<div class="callout reveal">
+<p><strong>The diagnosis:</strong> The activation flow is designed for EWA: download, connect bank, subscribe, get cash. Instant value. But diversification products need different activation triggers:</p>
+<ul style="margin:12px 0 0 20px;font-size:.9rem">
+<li><strong>Credit Builder:</strong> Show the credit score for free FIRST. Then introduce Builder ($14.99/month) as the tool that executes the improvement plan.</li>
+<li><strong>AI Chat:</strong> Give 3 free roast conversations. The personality IS the product. Let it sell the subscription.</li>
+<li><strong>UK:</strong> Let users interact with the AI FIRST. Connect bank as an upgrade, not a gate.</li>
+</ul>
+</div>
+<div class="biggest-leak reveal">
+<h3>THE BIGGEST LEAK: ATTRACTION LAYER</h3>
+<p>Cleo's traffic sources, creative, and targeting are all optimised for cash advance users. Diversification products need different signals, different channels, and different messaging. Running EWA creative for Card, Chat, and UK is the single biggest source of wasted spend and missed users. Fix the traffic first. Everything downstream follows.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 10: MONEY LEVERS (Card 10) -->
+<section class="alt" id="levers">
+<div class="inner">
+<span class="label reveal">Priority Fixes</span>
+<h2 class="reveal">The Money Levers: 11 Fixes Ranked by Revenue Impact</h2>
+<table class="reveal">
+<thead><tr><th>#</th><th>Lever</th><th>Current State</th><th>Fix</th><th>Impact</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>Diversification Channels</strong></td><td>All traffic from EWA Meta/TikTok</td><td>Product specific channels: Google Search for Credit Builder, content for Chat, UK social for relaunch</td><td class="impact">$20M to $40M</td></tr>
+<tr><td>2</td><td><strong>Product Specific Messaging</strong></td><td>One message for all products</td><td>Dedicated landing pages + App Store custom product pages + FTC compliant transparent copy</td><td class="impact">$10M to $20M</td></tr>
+<tr><td>3</td><td><strong>UK Landing Page</strong></td><td>Waitlist page, no conversion funnel</td><td>Full UK conversion experience with local proof and "Cleo + your bank" positioning</td><td class="impact">$8M to $15M</td></tr>
+<tr><td>4</td><td><strong>New Customer Segments</strong></td><td>Primarily US, primarily EWA</td><td>UK market (18 to 30), US credit seekers, AI coaching curious</td><td class="impact">$15M to $30M</td></tr>
+<tr><td>5</td><td><strong>Product Specific Onboarding</strong></td><td>One flow for all products</td><td>Branch by intent. Time to value optimised per product.</td><td class="impact">$5M to $10M</td></tr>
+<tr><td>6</td><td><strong>Post Download Experience</strong></td><td>Generic onboarding</td><td>Product specific welcome: show credit score, trigger first roast, local context for UK</td><td class="impact">$3M to $8M</td></tr>
+<tr><td>7</td><td><strong>Pricing Transparency</strong></td><td>Hidden until paywall</td><td>Show pricing upfront per FTC. Trust = conversion for Gen Z.</td><td class="impact">$2M to $5M</td></tr>
+<tr class="total-row"><td></td><td colspan="3"><strong>Conservative total over 18 months</strong></td><td class="impact">$50M to $80M</td></tr>
+</tbody>
+</table>
+<div class="callout reveal">
+<p>Each lever is independent. Fix one and the economics improve. Fix all seven and Cleo's diversification products go from a cost centre to a $50M+ revenue line.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 11: FUNNEL CASCADE (Card 11) -->
+<section id="funnel">
+<div class="inner">
+<span class="label reveal">How It All Connects</span>
+<h2 class="reveal">How Cleo Gets More Users and Converts Them</h2>
+<p class="subtitle reveal">Your full funnel mapped. Each stage shows what happens now, what is missing, and what we would install. Specific to diversification products, not core EWA.</p>
+
+<div class="pillars" style="display:grid;grid-template-columns:1fr;gap:0;margin:24px 0">
+<div class="pillar reveal" style="padding:20px;border:1px solid rgba(255,89,36,.2);border-radius:10px 10px 0 0;background:rgba(255,89,36,.04)">
+<h3 style="color:#FF5924">Top of Funnel: Getting Found</h3>
+<p><strong>Now:</strong> Meta and TikTok for core EWA. Paid social drives volume. But diversification products (Credit Builder, Chat, UK) don't have proven channels.</p>
+<p><strong>Missing:</strong> Google Search for Credit Builder keywords ("how to build credit," "credit score app"). UK creator partnerships for relaunch. LinkedIn thought leadership for Chris's positioning. Product specific creative (one size fits all creative does not work across 4 product lines).</p>
+<p><strong>Install:</strong> Channel specific acquisition per product. Google Search for Credit Builder. TikTok discovery for Chat. UK creator partnerships. Each product gets its own channel strategy, not a shared campaign.</p>
+</div>
+<div class="pillar reveal reveal-delay-1" style="padding:20px;border:1px solid rgba(245,158,11,.2);border-top:0;background:rgba(245,158,11,.04)">
+<h3 style="color:#f59e0b">Middle of Funnel: Nurture and Educate</h3>
+<p><strong>Now:</strong> Users download the app and hit a paywall. Core product (EWA) has a known conversion path. Diversification products do not.</p>
+<p><strong>Missing:</strong> Product specific onboarding. A Credit Builder user and an AI Chat user have different needs but see the same first screen. Time to value is unclear for new products. Post FTC messaging that builds trust through transparency.</p>
+<p><strong>Install:</strong> Product specific onboarding flows. "Here is exactly what you get for $5.99. No surprises." Reversed paywalls (value before price). FTC compliant templates that convert THROUGH transparency, not despite it.</p>
+</div>
+<div class="pillar reveal reveal-delay-2" style="padding:20px;border:1px solid rgba(34,197,94,.2);border-top:0;background:rgba(34,197,94,.04)">
+<h3 style="color:#22c55e">Bottom of Funnel: Convert</h3>
+<p><strong>Now:</strong> Subscription paywall. Core EWA converts because the value is immediate (cash advance = instant gratification).</p>
+<p><strong>Missing:</strong> Diversification products lack instant gratification. Credit Builder takes months to show results. Chat is ongoing value, not a single moment. UK users have no reference point for Cleo. Conversion paths need to match each product's value timeline.</p>
+<p><strong>Install:</strong> Product specific conversion triggers. Credit Builder: "your score improved by X points" milestone. Chat: "you saved X this month" milestone. UK: social proof from early adopters. Attribution separated by product so the board sees real unit economics per line.</p>
+</div>
+<div class="pillar reveal" style="padding:20px;border:1px solid rgba(139,92,246,.2);border-top:0;border-radius:0 0 10px 10px;background:rgba(139,92,246,.04)">
+<h3 style="color:#8b5cf6">Sale: Expand and Retain</h3>
+<p><strong>Now:</strong> Users subscribe. Core product retains through recurring need (cash advances).</p>
+<p><strong>Missing:</strong> Cross-sell between products. A Credit Builder user who also needs budgeting should see Chat. Retention for products without recurring urgency. UK expansion revenue tracking.</p>
+<p><strong>Install:</strong> Cross-sell triggers based on usage patterns. Product bundling experiments. Retention sequences per product. UK cohort analysis separated from US.</p>
+</div>
+</div>
+
+<p class="tagline reveal">Fix Top and Middle first. Diversification products need their own acquisition paths, not a copy of the EWA playbook.</p>
+</div>
+</section>
+
+<!-- SECTION 12: COMPETITION (Card 12) -->
+<section class="alt" id="competition">
+<div class="inner">
+<span class="label reveal">Market Position</span>
+<h2 class="reveal">Cleo vs. The Market: Where Nobody Else Is Looking</h2>
+<div class="comp-table reveal">
+<table>
+<thead><tr><th>Competitor</th><th>Cash Advance</th><th>Credit Builder</th><th>AI Coaching</th><th>UK Market</th><th>Post FTC Growth</th></tr></thead>
+<tbody>
+<tr><td>Cleo</td><td class="check">$280M+ ARR</td><td>Exists, unproven</td><td>Core, underleveraged</td><td>Relaunching</td><td>Forced, not yet strategy</td></tr>
+<tr><td>Dave</td><td>$500 limit</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td>Not affected</td></tr>
+<tr><td>Brigit</td><td>$250, simpler</td><td>Limited</td><td>Limited</td><td class="cross">&#10007;</td><td>Not affected</td></tr>
+<tr><td>MoneyLion</td><td>$500 to $1K</td><td>Yes, bundled</td><td>Basic</td><td class="cross">&#10007;</td><td>Not affected</td></tr>
+<tr><td>Plum</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td>Savings focus</td><td class="check">2M+ UK</td><td>N/A</td></tr>
+<tr><td>Chime</td><td>Early paycheck</td><td>Free</td><td class="cross">&#10007;</td><td class="cross">&#10007;</td><td>Not affected</td></tr>
+</tbody>
+</table>
+</div>
+<div class="callout reveal">
+<p><strong>The gap nobody else can fill:</strong> Cleo is the ONLY player with all five capabilities in one app. Dave, Brigit, and MoneyLion are stuck in the cash advance race. Plum owns UK savings but has no personality moat. Chime is a bank, not an AI.</p>
+<p>The company that builds acquisition infrastructure for all five capabilities simultaneously wins the "AI financial platform" narrative. Everyone else stays a "cash advance app."</p>
+<p><strong>That is the IPO story. And it starts with the diversification acquisition engine.</strong></p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 13: POST FTC GROWTH (Card 13) -->
+<section id="gap">
+<div class="inner">
+<span class="label reveal">The Insight</span>
+<h2 class="reveal">Post FTC Growth: The Playbook Nobody Has Written</h2>
+<p class="reveal">Every fintech that faces regulatory action responds the same way: slow down, add compliance layers, get conservative with messaging.</p>
+<p class="reveal">Cleo has a different option.</p>
+<p class="reveal">The FTC consent decree requires "clear and conspicuous disclosure of terms" and "simple cancellation." For most companies, that is a growth tax. For Cleo, it is a growth strategy.</p>
+<div class="callout reveal">
+<p><strong>Why:</strong> Gen Z actively distrusts financial institutions. The same users who wrote "I feel seen by this app" and "Cleo speaks my language" on the App Store want HONESTY, not hype.</p>
+</div>
+<div class="biggest-leak reveal" style="background:var(--navy)">
+<h3 style="color:var(--accent)">The move: Build "Transparent Growth" as a named methodology.</h3>
+<p>Every ad, every landing page, every onboarding screen leads with what the user ACTUALLY gets.</p>
+<p style="margin-top:12px;font-size:1.1rem;font-weight:700;color:#60a5fa">"Cleo shows you exactly what you qualify for. Before you commit."</p>
+<p style="margin-top:12px">That one line satisfies FTC requirements, builds trust with Gen Z, and differentiates Cleo from every competitor still playing the "up to $500" game.</p>
+<p style="margin-top:8px">Nobody else has this playbook because nobody else has been forced to build it.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 14: HOW SPRINTS CONNECT (Card 14) -->
+<section class="alt" id="sprints">
+<div class="inner">
+<span class="label reveal">The System</span>
+<h2 class="reveal">The Diversification Funnel: How Each Sprint Connects</h2>
+<table class="reveal">
+<thead><tr><th>Sprint Phase</th><th>What Gets Built</th><th>What It Unlocks</th></tr></thead>
+<tbody>
+<tr><td><strong>Sprint 1 (Days 1 to 30)</strong></td><td>Product specific channels, landing pages, branched onboarding</td><td>Baseline metrics per product. First data on real diversification CPAs.</td></tr>
+<tr><td><strong>Sprint 2 (Days 31 to 60)</strong></td><td>Scaled winners, App Store custom pages, nurture sequences</td><td>Lower CPA, higher retention, UK creator partnerships live.</td></tr>
+<tr><td><strong>Sprint 3 (Days 61 to 90)</strong></td><td>Repeatable framework documented, next wave launched</td><td>The Growth Marketing Lead has a playbook. Future products launch in 4 weeks, not 12 months.</td></tr>
+</tbody>
+</table>
+<div class="callout reveal">
+<p><strong>The funnel logic:</strong></p>
+<ul style="margin:8px 0 0 20px;font-size:.9rem">
+<li><strong>Top:</strong> Product specific traffic (different channels per product)</li>
+<li><strong>Middle:</strong> Tailored conversion paths (product specific landing pages and App Store custom pages)</li>
+<li><strong>Bottom:</strong> Optimised activation (reversed paywall, product specific onboarding, time to value optimised)</li>
+<li><strong>Conversion:</strong> FTC compliant transparent messaging as a trust lever</li>
+</ul>
+<p style="margin-top:12px">Each sprint builds on the last. Sprint 1 tests. Sprint 2 optimises. Sprint 3 documents. By day 90, the system runs without the builder.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 15: WEEKS 1-6 (Card 15) -->
+<section id="weeks1">
+<div class="inner">
+<span class="label reveal">90 Day Roadmap</span>
+<h2 class="reveal">Weeks 1 to 6: Test and Validate</h2>
+<div class="week-cards">
+<div class="week-card reveal"><div class="week-num">Week 1</div><h3>Infrastructure Setup</h3><p>Create product specific landing pages: meetcleo.com/credit-builder, meetcleo.com/uk. Set up separated tracking and attribution per product. Build the "What brought you to Cleo?" onboarding branch.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 2</div><h3>UK Conversion Page</h3><p>Replace the UK waitlist with a full conversion experience. Hero section: "Your bank shows you what you spent. Cleo shows you what to do about it." Include UK beta testimonials and Monzo/Starling positioning.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 3</div><h3>First Tests Launch</h3><p>Credit Builder: Google Search campaigns targeting "build credit app," "improve credit score app." UK: Instagram and Reddit test campaigns. Chat: TikTok discovery format with screen recordings of real Cleo AI conversations.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 4</div><h3>Go/No-Go Decision</h3><p>Measure CPA, download to account, account to subscribe, and 7 day retention per product per channel. Credit Builder CPA under $60? UK CPA under GBP 35? Scale the winners. Kill the losers.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 5</div><h3>Paywall Experiment</h3><p>Test reversed paywall for Credit Builder (show credit score free, paywall at improvement plan) and Chat (3 free roast conversations, paywall at conversation 4). Compare subscription conversion against current flow.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 6</div><h3>FTC Transparent Messaging Test</h3><p>A/B test transparent pricing creative ("Here's exactly what you get for $5.99") against current approach. Measure trust signals: completion rate, review sentiment, cancellation rate at 30 days.</p></div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 16: WEEKS 7-12 (Card 16) -->
+<section class="alt" id="weeks2">
+<div class="inner">
+<h2 class="reveal">Weeks 7 to 12: Optimise and Scale</h2>
+<div class="week-cards">
+<div class="week-card reveal"><div class="week-num">Week 7</div><h3>Scale Winners</h3><p>Products and channels that passed go/no-go get 3x budget increase. Launch 3 to 5 new creative angles per winning product. Kill underperformers without sentiment.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 8</div><h3>App Store Custom Product Pages</h3><p>Align Apple custom product pages with each campaign. Credit Builder screenshots for credit campaigns. UK features for UK campaigns. Stop sending diverse traffic to one generic listing.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 9</div><h3>UK Creator Partnerships</h3><p>Launch 2 to 3 YouTube UK fintech creator partnerships. Format: authentic "I tried Cleo for a week" reviews. Reddit r/UKPersonalFinance organic engagement.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 10</div><h3>Post Download Nurture Per Product</h3><p>Credit Builder: "Your credit score is X. Here's your 90 day improvement plan." Chat: "Cleo noticed you spent 40% more on food this week." UK: "Your Monzo round ups saved GBP 12 last month. Here's what Cleo would have done."</p></div>
+<div class="week-card reveal"><div class="week-num">Week 11</div><h3>Framework Documentation</h3><p>Build the 4 week product validation sprint template. Document everything: targeting, creative, landing page, onboarding, metrics, go/no-go criteria. This becomes the playbook your Growth Marketing Lead inherits.</p></div>
+<div class="week-card reveal"><div class="week-num">Week 12</div><h3>Playbook Handoff</h3><p>Hand the documented playbook to the Growth Marketing Lead. Launch the next wave of diversification products using the proven framework. First 90 day review: diversification CPA vs EWA CPA, UK acquisition rate, diversification revenue as percentage of total.</p></div>
+</div>
+<div class="quick-wins reveal">
+<h3>Quick Wins (Starting Now)</h3>
+<ul>
+<li>Create product specific landing pages (1 week of work, immediate impact)</li>
+<li>Turn FTC compliance into a trust message in existing creative (copy change only)</li>
+<li>Launch Google Search for credit builder terms (new high intent channel, 48 hours to go live)</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- SECTION 17: UK RE-ENTRY (Card 17) -->
+<section id="sample">
+<div class="inner">
+<span class="label reveal">Sample Deliverable</span>
+<h2 class="reveal">UK Re-Entry: Three Positioning Angles for Cleo</h2>
+<div class="tiers">
+<div class="tier reveal">
+<h3>Angle 1: "Cleo + Your Bank" (Recommended)</h3>
+<div class="conversion">Target: Monzo, Starling, and Revolut users (9M+ combined UK users)</div>
+<p><strong>Message:</strong> "Keep your bank. Add the AI. Cleo sits on top of your existing account and coaches you on what to do with your money."</p>
+<p><strong>Channel:</strong> Instagram UK, Reddit r/UKPersonalFinance</p>
+<p><strong>Why it works:</strong> Removes the "switch" objection. Positions Cleo as complementary, not competitive. Every Monzo user is a potential Cleo user.</p>
+</div>
+<div class="tier reveal">
+<h3>Angle 2: "The Cost of Living Coach"</h3>
+<div class="conversion">Target: 25 to 35 year olds struggling with rising costs</div>
+<p><strong>Message:</strong> "Your rent went up. Your bills went up. Your salary didn't. Cleo shows you exactly where to cut without giving up the things you love."</p>
+<p><strong>Channel:</strong> TikTok UK, YouTube financial education</p>
+<p><strong>Why it works:</strong> Taps into the UK cost of living crisis. Emotional trigger. Positions Cleo as a helper, not another subscription drain.</p>
+</div>
+<div class="tier reveal">
+<h3>Angle 3: "Budgeting That Doesn't Feel Like Budgeting"</h3>
+<div class="conversion">Target: 18 to 25 year olds who tried Plum, Emma, or Money Dashboard and bounced</div>
+<p><strong>Message:</strong> "Other budgeting apps lecture you. Cleo roasts you. 85% of users feel better about their finances within a month."</p>
+<p><strong>Channel:</strong> Instagram Reels, TikTok</p>
+<p><strong>Why it works:</strong> Personality is Cleo's moat. Plum is functional but personality free. Let the character sell the product.</p>
+</div>
+</div>
+<div class="callout reveal">
+<p><strong>Test recommendation:</strong> Run Angle 1 and Angle 3 head to head for 4 weeks. Angle 1 has the largest addressable market. Angle 3 has the strongest emotional hook. Winner gets scaled. Loser gets killed.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 18: KEY RESULTS (Card 18) -->
+<section class="alt" id="results">
+<div class="inner">
+<span class="label reveal">Projected Outcomes</span>
+<h2 class="reveal">What Changes in 30, 90, and 12 Months</h2>
+<div class="timeline reveal">
+<div class="timeline-card"><div class="timeline-header">30 Days</div><ul><li>Product specific landing pages live (Credit Builder, UK, Chat)</li><li>First real diversification CPA data</li><li>UK waitlist replaced with conversion funnel</li><li>Transparent pricing A/B test running</li></ul></div>
+<div class="timeline-card"><div class="timeline-header">90 Days</div><ul><li>Diversification CPA within 2x of core EWA CPA (down from estimated 3 to 5x)</li><li>UK market: 10K to 20K new users per month with positive unit economics</li><li>Repeatable 4 week product validation sprint documented</li><li>Growth Marketing Lead executing from a playbook, not guessing</li></ul></div>
+<div class="timeline-card"><div class="timeline-header">12 Months</div><ul><li>Diversification products contributing 15 to 25% of total ARR ($75M to $125M at projected $500M)</li><li>UK market: 200K to 500K active users</li><li>3+ new products launched using the repeatable framework</li><li>Cleo's IPO narrative shifts from "cash advance company" to "AI financial platform"</li></ul></div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 19: CASE STUDY (Card 19) -->
+<section id="casestudy">
+<div class="inner">
+<span class="label reveal">Proof</span>
+<h2 class="reveal">How BT Used Systematic Diagnostics to Unlock 15% SMB Revenue Growth</h2>
+<div class="case-phases reveal">
+<div class="case-phase context"><h3>Context</h3><p>BT/EE's SMB marketing produced volume but lacked visibility into what was actually driving revenue. Multiple channels running simultaneously. No single source of truth connecting marketing spend to commercial outcomes.</p></div>
+<div class="case-phase action"><h3>Action</h3><p>Jean built the single source of truth from scratch. Weekly trading sessions bringing Marketing, Finance, and Commercial together around one dataset. Identified which channels drove actual revenue and reallocated budget systematically.</p></div>
+<div class="case-phase result"><h3>Result</h3><p><strong style="font-size:1.3rem">15%</strong> SMB revenue growth<br><strong style="font-size:1.3rem">25%</strong> lead acquisition improvement<br>Permanent cross-functional tiger team still operates today<br>Single source of truth used across three departments</p></div>
+</div>
+<div class="callout reveal">
+<p><strong>Why this matters for Cleo:</strong> Cleo's diversification challenge is not a "run more ads" problem. It is a "build the system that tells you which product, which channel, and which message actually works" problem. That is exactly what was built at BT. Different scale. Same diagnostic architecture.</p>
+</div>
+</div>
+</section>
+
+<!-- SECTION 20: THE GROWTH FEEDBACK LOOP (Card 20) -->
+<section class="alt" id="method">
+<div class="inner">
+<span class="label reveal">The Compounding Engine</span>
+<h2 class="reveal">How Cleo Builds a Diversification Engine That Compounds</h2>
+<p class="subtitle reveal">Three loops. Each one feeds the others. The longer they run, the stronger they get.</p>
+<div class="method-flow reveal" style="display:grid;grid-template-columns:1fr;gap:16px;margin-top:20px">
+<div class="method-step" style="padding:20px;border-radius:10px;border:1px solid rgba(255,89,36,.15);background:rgba(255,89,36,.03)">
+<h3 style="margin-bottom:8px">Loop 1: Product Launch to Channel Intelligence</h3>
+<p>Every diversification product launch generates data. Credit Builder's first 4 week sprint tells you which channels drive sign-ups, which messaging converts, which audiences activate. That data feeds the next product launch. Chat learns from Credit Builder's mistakes. UK learns from both. Each product launches faster and cheaper than the last because the system learns.</p>
+</div>
+<div class="method-step" style="padding:20px;border-radius:10px;border:1px solid rgba(34,197,94,.15);background:rgba(34,197,94,.03)">
+<h3 style="margin-bottom:8px">Loop 2: Trust Rebuilding Loop</h3>
+<p>The FTC settlement is a constraint. But constraints create positioning. "Here is exactly what you get. No surprises." Every transparent creative that converts proves the model. Every positive review rebuilds trust. Every quarter without a regulatory issue compounds credibility. The brands that survive regulatory scrutiny and keep growing become the most trusted in their category. Cleo can own "the fintech that tells you the truth."</p>
+</div>
+<div class="method-step" style="padding:20px;border-radius:10px;border:1px solid rgba(139,92,246,.15);background:rgba(139,92,246,.03)">
+<h3 style="margin-bottom:8px">Loop 3: Test, Measure, Learn, Scale, Document</h3>
+<p>4 week validation sprints. One product. One channel. One hypothesis. Every sprint.<br>Sprint 1: Credit Builder on Google Search. Measure: CPA vs core benchmark, activation rate, 30 day retention.<br>Sprint 2: UK relaunch with creator partnerships. Measure: download to activation, cost per activated user.<br>Sprint 3: Chat discovery on TikTok. Measure: organic vs paid, virality coefficient.<br>What works gets scaled. What does not gets killed. Everything gets documented so the Diversification team inherits a playbook, not a blank page.</p>
+</div>
+</div>
+<p class="tagline reveal" style="margin-top:20px;font-style:italic">This is how Cleo turns the FTC moment into a growth moment. Not by retreating. By building the system that proves every product earns its place.</p>
+</div>
+</section>
+
+<!-- SECTION 21: FAQ (Card 21) -->
+<section id="faq">
+<div class="inner">
+<span class="label reveal">Questions</span>
+<h2 class="reveal">Frequently Asked Questions</h2>
+<div class="faq-list reveal">
+<div class="faq-item"><div class="faq-q">Why is this free?</div><div class="faq-a">Because the package itself is the proof. If this audit makes you think "this person understands our problem," that is worth more than any sales call.</div></div>
+<div class="faq-item"><div class="faq-q">What is the catch?</div><div class="faq-a">There is none. Worst case: you get a Cleo specific acquisition diagnostic and a 90 day roadmap for free. Best case: we work together to install it.</div></div>
+<div class="faq-item"><div class="faq-q">We already have a growth team. Why would we need MDB?</div><div class="faq-a">Your growth team is optimised for EWA. Diversification is a different muscle. We build the framework and hand it to your team. MDB installs the system. Your Growth Marketing Lead runs it.</div></div>
+<div class="faq-item"><div class="faq-q">How is this different from a marketing agency?</div><div class="faq-a">MDB is an infrastructure partner. Agencies rent lead flow. We install permanent acquisition infrastructure that your team owns and operates. When we leave, the system stays.</div></div>
+<div class="faq-item"><div class="faq-q">Don't we just need the hire?</div><div class="faq-a">Your JD describes 12 to 18 months of work. One person building from scratch while coordinating across product, creative, data, and channel managers. MDB installs the framework in 90 days so the hire executes from day one instead of month six.</div></div>
+<div class="faq-item"><div class="faq-q">What about FTC compliance?</div><div class="faq-a">Every recommendation in this document works WITHIN the consent decree requirements. We treat transparency as a growth lever, not a constraint.</div></div>
+<div class="faq-item"><div class="faq-q">How quickly will we see results?</div><div class="faq-a">Real diversification CPA data within 30 days. Optimised channels within 60 days. Documented, repeatable playbook within 90 days.</div></div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 22: ABOUT (Card 22) -->
+<section class="alt" id="about">
+<div class="inner">
+<span class="label reveal">About</span>
+<h2 class="reveal">Jean Mundabi Fala</h2>
+<div class="about-card reveal">
+<div class="avatar">JM</div>
+<div class="about-info">
+<h3>Jean Mundabi Fala</h3>
+<div class="title-role">CEO, MDB Growth Capital</div>
+<p>Based in the UK. Originally from DRC. Fluent in French and English. 3+ years leading SMB performance marketing at BT/EE. 2+ years managing GBP 30 to 40M marketing budgets at Santander. Master's in Business Intelligence and Data Mining.</p>
+<p>MDB Growth Capital is an infrastructure partner that installs permanent revenue infrastructure. Not rented lead flow. Owned growth systems that compound.</p>
+<a href="https://linkedin.com/in/jeanmundabi" target="_blank" class="linkedin-btn">Connect on LinkedIn</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SECTION 23: OFFER (Card 23) -->
+<section class="dark" id="offer">
+<div class="inner">
+<span class="label reveal">The Offer</span>
+<h2 class="reveal">Everything here is yours to keep.</h2>
+<p class="reveal">Use the Leak Map. Implement the 90 day roadmap. Test the UK positioning angles. No strings attached.</p>
+<p class="reveal" style="margin-top:20px"><strong>If you want to go further:</strong></p>
+<ul class="reveal" style="margin:12px 0 20px 20px;font-size:.95rem;opacity:.9">
+<li>Full diversification acquisition infrastructure installation (every funnel stage covered)</li>
+<li>Product specific channel strategy (Credit Builder, Chat, UK, future products)</li>
+<li>Post FTC transparent growth framework</li>
+<li>4 week product validation sprint methodology</li>
+<li>90 day hands on build with your team</li>
+</ul>
+<p class="reveal" style="opacity:.7">Investment: Let us discuss it on a call. We will show you the economics first.</p>
+</div>
+</section>
+
+<!-- SECTION 24: FINAL CTA (Card 24) -->
+<section class="dark" id="cta2" style="padding-bottom:40px">
+<div class="inner" style="text-align:center">
+<h2 class="reveal">2 Options To Get Started</h2>
+<div class="cta-grid reveal">
+<div class="cta-card"><h3>Just Reply</h3><p>Reply to the email this came with. Tell me what resonated.</p><a class="btn outline" href="mailto:">Reply to Email</a></div>
+<div class="cta-card"><h3>Book A Call</h3><p>15 minutes. No pitch. No deck. Just a conversation about Cleo's diversification challenge and what a 90 day sprint looks like.</p><a class="btn" href="https://cal.com/jean-m-8f4kbr/15min" target="_blank">Book 15 Minutes</a></div>
+</div>
+<p class="closing reveal" style="margin-top:32px">Chris, Cleo built a $300M cash advance engine. The next $300M comes from diversification. Let me help you build the system that gets there.</p>
+<p class="reveal" style="font-size:1.1rem;font-weight:700;margin-top:16px">Read it. Then decide.</p>
+<p class="signature reveal">Jean Mundabi Fala<br>MDB Growth Capital</p>
+<div class="footer-bar">Strategy and GTM research by Jean Mundabi Fala</div>
+</div>
+</section>
+
+<!-- CAL.COM EMBED SCRIPT -->
+<script>
+(function(){
+  const s=document.createElement('script');
+  s.src='https://app.cal.com/embed/embed.js';
+  s.async=true;
+  document.head.appendChild(s);
+})();
+</script>
+
+<script>
+// ── SCROLL ANIMATIONS ──
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ── SIDE NAV SCROLL TRACKING ──
+const sections=document.querySelectorAll('section[id]');
+const navDots=document.querySelectorAll('.side-nav a');
+const navObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navDots.forEach(d=>d.classList.remove('active'));
+      const dot=document.querySelector(`.side-nav a[href="#${e.target.id}"]`);
+      if(dot)dot.classList.add('active');
+    }
+  })
+},{threshold:0.3,rootMargin:'-10% 0px -60% 0px'});
+sections.forEach(s=>navObserver.observe(s));
+
+// ── FAQ ACCORDION ──
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.parentElement;
+    const wasOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen)item.classList.add('open');
+  });
+});
+
+// ── VIDEO EMBED ──
+const videoEl=document.getElementById('videoEmbed');
+const videoUrl='VIDEO_URL_GOES_HERE';
+if(videoUrl&&videoUrl!=='VIDEO_URL_GOES_HERE'){
+  let embedUrl='';
+  if(videoUrl.includes('loom.com')){
+    const id=videoUrl.split('/').pop().split('?')[0];
+    embedUrl=`https://www.loom.com/embed/${id}`;
+  }else if(videoUrl.includes('youtube.com')||videoUrl.includes('youtu.be')){
+    const id=videoUrl.includes('youtu.be')?videoUrl.split('/').pop():new URLSearchParams(new URL(videoUrl).search).get('v');
+    embedUrl=`https://www.youtube.com/embed/${id}`;
+  }else if(videoUrl.includes('vimeo.com')){
+    const id=videoUrl.split('/').pop().split('?')[0];
+    embedUrl=`https://player.vimeo.com/video/${id}`;
+  }else if(videoUrl.includes('tella.tv')){
+    embedUrl=videoUrl.replace('/video/','/embed/');
+  }
+  if(embedUrl){
+    videoEl.innerHTML=`<iframe src="${embedUrl}" style="width:100%;height:100%;border:none;border-radius:12px" allowfullscreen></iframe>`;
+  }
+}
+</script>
+</body>
+</html>
